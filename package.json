@@ -1,0 +1,23 @@
+{
+  "name": "dnc-web",
+  "version": "0.0.1",
+  "description": "Web client for DNC server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owendismuke/dnc-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owendismuke/dnc-web/issues"
+  },
+  "homepage": "https://github.com/owendismuke/dnc-web#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3"
+  }
+}
