@@ -8,16 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/owendismuke/dnc-web.git"
+    "url": "git+https://github.com/diamondnotcrush/dnc-web.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/owendismuke/dnc-web/issues"
+    "url": "https://github.com/diamondnotcrush/dnc-web/issues"
   },
-  "homepage": "https://github.com/owendismuke/dnc-web#readme",
+  "homepage": "https://github.com/diamondnotcrush/dnc-web#readme",
   "dependencies": {
     "body-parser": "^1.13.3",
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "mysql": "^2.9.0",
+    "sequelize": "^3.6.0"
   }
 }
