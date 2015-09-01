@@ -27,8 +27,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask("lint", "jshint");
   
-  grunt.registerTask("default", ["jshint", "mochaTest"]);
-
+  grunt.registerTask("test", ["jshint", "mochaTest"]);
+  grunt.registerTask("default", []);
   /*
   * TODO: Add deployment and clean/concat/minify tasks
   */
