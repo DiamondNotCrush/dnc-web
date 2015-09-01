@@ -3,7 +3,7 @@ var morgan      = require('morgan'), // used for logging incoming request
 
 module.exports = function (app, express, Users, Connections) {
   // var connectionRouter = express.Router();
-  // var userRouter = express.Router();
+  var userRouter = express.Router();
 
   app.set('view engine', 'html');
   app.use(morgan('dev'));
@@ -12,10 +12,10 @@ module.exports = function (app, express, Users, Connections) {
   app.use(express.static('public'));
 
   // app.use('/connection', connectionRouter); // user connection router for connection updates
-  // app.use('/user', userRouter); // use user router for all user request
+  app.use('/user', userRouter); // use user router for all user request
 
 
   // // inject our routers into their respective route files
   // require('../connections/connectionRoutes.js')(connectionRouter, Connections);
-  // require('../users/userRoutes.js')(userRouter, Users);
+  require('../users/userRoutes.js')(userRouter, Users);
 };
