@@ -8,7 +8,7 @@ var Connections = require("./connections/ConnectionModel")(sequelize);
 
 // //Setup database tables
 Users.User.hasMany(Connections.Connections, {as: 'UserId'});
-// sequelize.sync();
+sequelize.sync();
 
 var app = express();
   app.use(express.static('public'));
