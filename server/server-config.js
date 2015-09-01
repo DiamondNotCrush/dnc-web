@@ -1,5 +1,5 @@
 var express = require('express');
-// var Sequelize = require('sequelize');
+var Sequelize = require('sequelize');
 
 // var sequelize = new Sequelize(process.env.MYSQL || 'mysql://root@localhost:3306/dnc');
 // //Call models to set associations
