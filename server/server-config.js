@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize(process.env.MYSQL || 'mysql://root@localhost:3306/dnc');
 // //Call models to set associations
-// var Users = require("./users/UserModel")(sequelize);
+var Users = require("./users/UserModel")(sequelize);
 // var Connections = require("./connections/ConnectionModel")(sequelize);
 
 // //Setup database tables
