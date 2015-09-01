@@ -7,6 +7,9 @@ var Connections = sequelize.define('Connections', {
   File: Sequelize.STRING
 });
 
+/*
+* Will need name, email, password and unique id(?)
+*/
 var Users = sequelize.define('Users', {
   name: Sequelize.STRING
 });
