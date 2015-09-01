@@ -9,7 +9,7 @@ module.exports = function (app, express, Users, Connections) {
   app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
-  app.use(express.static('./public'));
+  app.use("/", express.static('./public'));
 
   app.use('/connection', connectionRouter); // user connection router for connection updates
   app.use('/user', userRouter); // use user router for all user request
