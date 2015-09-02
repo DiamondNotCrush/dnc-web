@@ -28,7 +28,6 @@ module.exports = function (app, express, sequelize, Users, Connections) {
     }
   ));
 
-
   app.use('/connection', connectionRouter); // user connection router for connection updates
   app.use('/user', userRouter); // use user router for all user request
 

@@ -6,7 +6,7 @@ module.exports = function (app, Users) {
   //Sign up route for user
   app.post('/addUser', userController.addUser);
   //Update User info
-  app.post('/updateUser/:id(\\d+)', userController.updateUser);
+  app.post('/updateUser', userController.updateUser);
   //Library route for user
   app.get('/library', userController.fetchUserLibrary);
   
