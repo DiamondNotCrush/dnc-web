@@ -107,7 +107,7 @@ module.exports = function (Users, Connections) {
               res.send(body);
             } else {
               console.log("Unable to fetch user library from client-server: ", err);
-              res.sendStatus(500);
+              res.send({});
             }
           });
         });
