@@ -20,7 +20,7 @@ module.exports = function (Connections) {
   return {
      addConnection: function(req, res) {
       //Map data
-      var UserId = req.body.id;
+      var UserId = req.body.userid;
       var ip = req.connection.remoteAddress;
       var port = req.body.port;
       //If user connection exists, update
