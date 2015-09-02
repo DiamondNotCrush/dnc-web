@@ -7,7 +7,7 @@ module.exports = function (Connections) {
     //Add or Update client-server connection
     addConnection: function(req, res) {
       //Map data
-      var userId = req.params.id;
+      var userId = req.body.userid;
       var ip = req.connection.remoteAddress;
       var port = req.body.port;
       
@@ -22,7 +22,7 @@ module.exports = function (Connections) {
         .then(function() {
           Connection.findOrCreate({
             where: {userId: userId}
-          })
+          });
         })
         .spread(function (connection, created) {
           res.send("Connection Verified");
@@ -38,7 +38,7 @@ module.exports = function (Connections) {
         .then(function() {
           Connection.findOrCreate({
             where: {userId: userId}
-          })
+          });
         })
         .spread(function (connection, created) {
           res.send("Connection not verified");
