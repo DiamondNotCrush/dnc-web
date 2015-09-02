@@ -10,26 +10,40 @@ module.exports = function (Connections) {
       var userId = req.params.id;
       var ip = req.connection.remoteAddress;
       var port = req.body.port;
-      var file = req.body.file;
-      //If user connection exists, update
-      Connection.create({
-        userId: userId,
-        IP: ip,
-        Port: port,
-        File: file,
-        //Field (bool) if connection has been verified
-      })
-      .then(function() {
-        Connection.findOrCreate({
-          where: {userId: userId}
+      
+      //Verify connection before saving to database
+      if (verifyConnection(ip, port)) {
+        Connection.create({
+          userId: userId,
+          IP: ip,
+          Port: port,
+          Verified: 1
+        })
+        .then(function() {
+          Connection.findOrCreate({
+            where: {userId: userId}
+          })
         })
         .spread(function (connection, created) {
-          //On success, verify connection
-          if (verifyConnection(connection.IP, connection.Port);
-          //Send new entry in response
-          res.send(connection);
+          res.send("Connection Verified");
         });
-      });
+      //Unable to verify connection
+      } else {
+        Connection.create({
+          userId: userId,
+          IP: ip,
+          Port: port,
+          Verified: 0
+        })
+        .then(function() {
+          Connection.findOrCreate({
+            where: {userId: userId}
+          })
+        })
+        .spread(function (connection, created) {
+          res.send("Connection not verified");
+        });
+      }
     },
     //Verify Client-Server Connection
     verifyConnection: function(ip, port){

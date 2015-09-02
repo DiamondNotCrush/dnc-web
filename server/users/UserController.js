@@ -9,17 +9,23 @@ module.exports = function (Users) {
       // Add support to sign via username of email
       var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
       var field = req.body.username.match(regExp) ? email : username;
-      var id = req.body.username;
+      var id = req.body.username || req.body.email;
       var password = req.body.password;
 
       User.findOne({
-        where: {field: username}
+        where: {field: id}
       })
       .then(function (user) {
-        //Un-Hashed Check
-        if (user.password === password) {
-          res.send("User Validated");
-        }
+        //Verify password and username/email
+
+        //Set session on success
+        req.session.save(function (err) {
+          if (err) {
+            console.log("Unable to save session: ", err);
+          }
+        });
+        //Set session user id
+        req.session.userid = user.id;
       })
       .catch(function (err) {
         console.log("Error verifying user: ", err);
@@ -28,7 +34,14 @@ module.exports = function (Users) {
 
     //userLogout
     userLogout: function(req, res) {
-
+      //destroy session
+      req.session.destroy(function (err) {
+        if (err) {
+          console.log("Unable to destroy session: ", err);
+        }
+      });
+      res.redirect(301, "/");
+      res.send();
     },
 
     //Add user

@@ -11,9 +11,8 @@ Users.User.hasMany(Connections.Connections, {as: 'UserId'});
 sequelize.sync();
 
 var app = express();
-  // app.use(express.static('public'));
 
 //Pass app and express to middleware routing
-require('./config/middleware.js')(app, express, Users, Connections);
+require('./config/middleware.js')(app, express, sequelize, Users, Connections);
 
 module.exports = app;
