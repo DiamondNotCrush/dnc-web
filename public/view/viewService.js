@@ -9,7 +9,8 @@ angular
         },
         files: {
           method: 'GET',
-          url: user.details.ip + ':' + user.details.port + '/library' //Could test encodeURI()
+          url: '/user/library/:id', //Could test encodeURI()
+          params: {id: user.details.id}
         }
       })
     };
