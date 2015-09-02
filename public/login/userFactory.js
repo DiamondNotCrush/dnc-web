@@ -5,7 +5,7 @@ angular
      details: {
         name: '',
         isAuthorized: false,
-        id: 1,
+        id: 0,
         ip: '',
         port: 0
       }
