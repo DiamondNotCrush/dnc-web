@@ -7,8 +7,6 @@ module.exports = function (app, Users, Connections) {
   app.post('/addUser', userController.addUser);
   //Update User info
   app.post('/updateUser', userController.updateUser);
-  //Library route for user
-  app.get('/library/:id(\\d+)', userController.fetchUserLibrary);
   
   app.get('/findUser/:id(\\d+)', userController.findUser);
 };
