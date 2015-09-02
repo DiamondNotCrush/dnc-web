@@ -1,33 +1,35 @@
 //Specs for UserController
 var assert = require("assert");
-var expect = require("chai");
+var expect = require("chai").expect;
 var request = require("request");
 
+
+
 describe("Users", function(){
-  // describe("/users/add", function(){
-  //   it("should respond with user id", function(){
-  //     //Build user data
-  //     var user = {"username": "gribby", "email":"test@gmail.com", "password":"p455word"};
-  //     //Call api with data
-  //     request.post({url:"http://localhost:4588/user/addUser", form: user}, function (err, httpResponse, body) {
-  //       expect(body.user.id).to.be.a("number");
-  //     });
-  //   });
-  // });
-  // describe("/users/login", function(){
-  //   it("should authenticate user", function(){
-  //     //Mock login via api
-  //     var user = {"username": "gribby", "password":"p455word"};
-  //     //compare returned data with success expectation
-  //     request.post({url:"http://localhost:4588/user/login", form: user}, function (err, httpResponse, body) {
-  //       expect(body).to.be("User Validated");
-  //     });
-  //   });
-  //   it("should redirect to library after login", function(){
-  //     //page after login should be library on web side
-  //     expect("true").to.be("false");
-  //   });
-  // });
+  describe("/users/add", function(){
+    it("should respond with user id", function(){
+      //Build user data
+      var user = {"username": "gribby", "email":"test@gmail.com", "password":"p455word"};
+      //Call api with data
+      request.post({url:"http://localhost:4588/user/addUser", form: user}, function (err, httpResponse, body) {
+        expect(body.user.id).to.be.a("number");
+      });
+    });
+  });
+  describe("/users/login", function(){
+    it("should authenticate user", function(){
+      //Mock login via api
+      var user = {"username": "gribby", "password":"p455word"};
+      //compare returned data with success expectation
+      request.post({url:"http://localhost:4588/user/login", form: user}, function (err, httpResponse, body) {
+        expect(body).to.be("User Validated");
+      });
+    });
+    it("should redirect to library after login", function(){
+      //page after login should be library on web side
+      expect("true").to.be("false");
+    });
+  });
   describe("/user/update", function(){
     it("should update user", function(){
       var user1 = {"id": 5, "username": "gribby", "email": "updated@gmail.com", "password": "p455word"};

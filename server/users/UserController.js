@@ -1,10 +1,10 @@
 //User Controller
-module.exports = function (Users, Connections) { 
+module.exports = function (Users) { 
   var User = Users.User,
-      Connection = Connections.Connections,
       request = require("request");
 
   return {
+
     //userLogin
     userLogin: function(req, res, next) {
       // Add support to sign via username or email
@@ -21,14 +21,34 @@ module.exports = function (Users, Connections) {
           res.send("User Validated");
         }
       })
-      .catch(function (err) {
-        console.log("Error verifying user: ", err);
+      .success(function (user) {
+        //Verify password and username/email
+        user.comparePasswords(password, function (err, isMatch) {
+          if (isMatch) {
+            req.session.save(function (err) {
+              if (err) {
+                console.log("Unable to save session: ", err);
+              }
+            });
+            //Set session user id
+            req.session.userid = user.id;
+          } else {
+            res.send("Unable to authenticate");
+          }
+        });
       });
     },
 
     //userLogout
     userLogout: function(req, res) {
-
+      //destroy session
+      req.session.destroy(function (err) {
+        if (err) {
+          console.log("Unable to destroy session: ", err);
+        }
+      });
+      res.redirect(301, "/");
+      res.send();
     },
 
     //Add user
@@ -36,20 +56,20 @@ module.exports = function (Users, Connections) {
       var username = req.body.username,
           email = req.body.email,
           password = req.body.password;
-      //Create user if user does not exist
-      User.create({
+      
+      User.build({
         username: username,
         email: email, 
         password: password
       })
-        .then(function (){
-          User.findOrCreate({
-            where: {username: username}
-          })
-          .spread(function (user, created) {
-            res.send(user);
-          });
-        });
+      .setToken()
+      .save(function(user){
+        //return userid also
+        console.log("Saved user to database: ", user);
+      })
+      .catch(function(err){
+        console.log("Error saving: ", err);
+      });
     },
 
     //updateUser
@@ -73,6 +93,7 @@ module.exports = function (Users, Connections) {
         console.log("Error updating user: ", err);
       });
     },
+
     //find user
     findUser: function (req, res) {
       var id = req.params.id;
@@ -85,34 +106,6 @@ module.exports = function (Users, Connections) {
       .catch(function (err) {
         console.log("Error fetching user: ", err);
       });
-    },
-
-    //Query client-server for library
-    fetchUserLibrary: function (req, res) {
-      //Get connection ip and port from connections
-      Connection
-        .findOne({
-          where: { UserId: req.params.id }
-        })
-        .then(function(conn) {
-          if (!conn) {
-            res.send({});
-            return;
-          }
-
-          request.get("http://"+conn.IP+":"+conn.Port+"/library", function (err, response, body) {
-            //On success, send JSON library to parse in view
-            if (!err && res.statusCode === 200) {
-              //Consider manipulating the data here to create an object of url, name, media type, isAudio, isVideo to offload this from the client side
-              res.send(body);
-            } else {
-              console.log("Unable to fetch user library from client-server: ", err);
-              res.send({});
-            }
-          });
-        });
-
-      //Make call to client-server 
     },
   }; //End return
 };
