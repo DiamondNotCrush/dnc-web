@@ -1,6 +1,6 @@
 //User Router
-module.exports = function (app, Users) {
-  var userController = require('./UserController.js')(Users);
+module.exports = function (app, Users, Connections) {
+  var userController = require('./UserController.js')(Users, Connections);
   //Login route for user
   app.post('/login', userController.userLogin);
   //Sign up route for user
@@ -8,7 +8,7 @@ module.exports = function (app, Users) {
   //Update User info
   app.post('/updateUser', userController.updateUser);
   //Library route for user
-  app.get('/library', userController.fetchUserLibrary);
+  app.get('/library/:id(\\d+)', userController.fetchUserLibrary);
   
   app.get('/findUser/:id(\\d+)', userController.findUser);
 };

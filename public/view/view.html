@@ -12,7 +12,7 @@
      <div class="well well-sm library">
        <ul>
         <li ng-if="!view.files">No files in library</li>
-        <li ng-if="view.files" ng-repeat="file in view.files">{{view.user.ip}}:{{view.user.port}} - {{file}}</li>
+        <li ng-if="view.files" ng-repeat="(key, value) in view.files">{{view.user.ip}}:{{view.user.port}} - {{key}}</li>
        </ul>
      </div>
    </div>

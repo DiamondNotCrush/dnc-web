@@ -1,11 +1,11 @@
 //Connection Controller
 module.exports = function (Connections) {
-  var Connection = Connections.Connections;
-  var request = require('request');
+  var Connection = Connections.Connections,
+      request = require('request');
 
-  return {
     //Add or Update client-server connection
-    addConnection: function(req, res) {
+  return {
+     addConnection: function(req, res) {
       //Map data
       var userId = req.body.userid;
       var ip = req.connection.remoteAddress;
@@ -49,15 +49,22 @@ module.exports = function (Connections) {
     verifyConnection: function(ip, port){
       //Make call to client-server using ip:port/verify
       return request.get("http://"+ip+":"+port+"/verify", function(err, res, body) {
-        //Listen for response
-        if (!error && res.statusCode === 200) {
-          //Return true
-          return 1;
-        } else {
-          //Return false
-          return 0;
-        }
-      });
+        var UserId = req.body.userid;
+        var ip = req.connection.remoteAddress;
+        var port = req.body.port;
+        //If user connection exists, update
+        if (verifyConnection(ip, port)) {
+          Connection.findOrCreate({
+            where: {
+              UserId: UserId,
+              IP: ip,
+              Port: port
+              //Field (bool) if connection has been verified
+            }
+          }).spread(function(connection, created){
+            res.send(connection);
+          });
+      }
     },
   }; // End of return
 };
