@@ -96,7 +96,7 @@ module.exports = function (Users, Connections) {
         })
         .then(function(conn) {
           if (!conn) {
-            res.send([]);
+            res.send({});
             return;
           }
 
