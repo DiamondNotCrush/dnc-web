@@ -3,19 +3,6 @@ module.exports = function (Connections) {
   var Connection = Connections.Connections,
       request = require('request');
 
-  function verifyConnection(ip, port) {
-    return request.post("http://"+ip+":"+port+"/verify", function(err, res, body) {
-      //Listen for response
-      if (!err && res.statusCode === 200) {
-        //Return true
-        return 1;
-      } else {
-        //Return false
-        return 0;
-      }
-    });
-  }
-
     //Add or Update client-server connection
   return {
      addConnection: function(req, res) {
@@ -37,6 +24,18 @@ module.exports = function (Connections) {
         });
       }
     },
-    verifyConnection: verifyConnection,
+
+    verifyConnection: function(ip, port) {
+      return request.post("http://"+ip+":"+port+"/verify", function(err, res, body) {
+        //Listen for response
+        if (!err && res.statusCode === 200) {
+          //Return true
+          return 1;
+        } else {
+          //Return false
+          return 0;
+        }
+      });
+    }
   }; // End of return
 };
