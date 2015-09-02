@@ -4,11 +4,11 @@ angular
     var _this = this;
     _this.user = user.details;
 
-    view.File.files()
+    view.Files.get({id:_this.user.id})
       .$promise
-      .then(function(data) {
-        console.log(data);
-        _this.files = data;
+      .then(function(files) {
+        console.log(files);
+        _this.files = files;
       });
     //Service to pull library and format links
 

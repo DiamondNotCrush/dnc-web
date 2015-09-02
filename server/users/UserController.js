@@ -1,19 +1,19 @@
 //User Controller
-module.exports = function (Users) { 
-  var User = Users.User;
-  var request = require("request");
+module.exports = function (Users, Connections) { 
+  var User = Users.User,
+      Connection = Connections.Connections,
+      request = require("request");
 
   return {
     //userLogin
     userLogin: function(req, res, next) {
-      // Add support to sign via username of email
+      // Add support to sign via username or email
       var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
-      var field = req.body.username.match(regExp) ? email : username;
-      var id = req.body.username;
+      var field = req.body.username.match(regExp) ? {email: req.body.username} : {username: req.body.username};
       var password = req.body.password;
 
       User.findOne({
-        where: {field: username}
+        where: field
       })
       .then(function (user) {
         //Un-Hashed Check
@@ -88,16 +88,31 @@ module.exports = function (Users) {
     },
 
     //Query client-server for library
-    fetchUserLibrary: function (ip, port) {
+    fetchUserLibrary: function (req, res) {
+      //Get connection ip and port from connections
+      Connection
+        .findOne({
+          where: { UserId: req.params.id }
+        })
+        .then(function(conn) {
+          if (!conn) {
+            res.send([]);
+            return;
+          }
+
+          request.get("http://"+conn.IP+":"+conn.Port+"/library", function (err, response, body) {
+            //On success, send JSON library to parse in view
+            if (!err && res.statusCode === 200) {
+              //Consider manipulating the data here to create an object of url, name, media type, isAudio, isVideo to offload this from the client side
+              res.send(body);
+            } else {
+              console.log("Unable to fetch user library from client-server: ", err);
+              res.sendStatus(500);
+            }
+          });
+        });
+
       //Make call to client-server 
-      request.post("http://"+ip+":"+port+"/library", function (err, res, body) {
-        //On success, send JSON library to parse in view
-        if (!error && res.statusCode === 200) {
-          //call function to parse in view
-        } else {
-          console.log("Unable to fetch user library from client-server: ", err);
-        }
-      });
     },
   }; //End return
 };
