@@ -59,6 +59,7 @@ module.exports = function (Users) {
       })
       .setToken()
       .save(function(user){
+        //return userid also
         console.log("Saved user to database: ", user);
       })
       .catch(function(err){

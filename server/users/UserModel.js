@@ -13,6 +13,7 @@ module.exports = function (sequelize) {
   }, {
     instanceMethods: {
       setToken: function () {
+        var defer = Q.defer();
         // only hash password if it has been modified or is new
         if (!this.changed("password")) {
           return;
@@ -25,10 +26,11 @@ module.exports = function (sequelize) {
           //hash password
           bcrypt.hash(this.password, salt, null, function (err, hash) {
             if (err) {
-              console.log("Error hashing password: ", err);
+              defer.reject(err);
+            } else {
+              defer
             }
             //Set password and salt  
-            console.log("<-----> hash: ", hash);
             this.password = hash;
             this.salt = salt;
           });
