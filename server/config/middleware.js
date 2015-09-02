@@ -15,7 +15,7 @@ module.exports = function (app, express, Users, Connections) {
   app.use('/user', userRouter); // use user router for all user request
 
 
-  // // inject our routers into their respective route files
+  // inject our routers into their respective route files
   require('../connections/ConnectionRoutes.js')(connectionRouter, Connections);
   require('../users/UserRoutes.js')(userRouter, Users);
 };

@@ -25,7 +25,7 @@ module.exports = function (Connections) {
         })
         .spread(function (connection, created) {
           //On success, verify connection
-          verifyConnection(connection.IP, connection.Port);
+          if (verifyConnection(connection.IP, connection.Port);
           //Send new entry in response
           res.send(connection);
         });
@@ -34,7 +34,7 @@ module.exports = function (Connections) {
     //Verify Client-Server Connection
     verifyConnection: function(ip, port){
       //Make call to client-server using ip:port/verify
-      return request.post("http://"+ip+":"+port+"/verify", function(err, res, body) {
+      return request.get("http://"+ip+":"+port+"/verify", function(err, res, body) {
         //Listen for response
         if (!error && res.statusCode === 200) {
           //Return true
