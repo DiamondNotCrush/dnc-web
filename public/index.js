@@ -2,6 +2,7 @@ var app = window.app = angular
   .module('app', [
   'ngResource',
   'ui.router',
+  'media',
   'app.main',
   'app.view',
   'app.login',

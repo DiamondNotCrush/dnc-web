@@ -27,6 +27,7 @@
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
+    "mime-types": "^2.1.5",
     "morgan": "^1.6.1",
     "mysql": "^2.9.0",
     "q": "^1.4.1",

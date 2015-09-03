@@ -55,6 +55,10 @@ hr {
   overflow-y: hidden;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   header {
     min-height: 100%;
