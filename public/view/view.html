@@ -2,18 +2,22 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
       <div class="embed-responsive embed-responsive-16by9">
-       <video class="dashjs-player embed-responsive-item" autoplay preload="none" controls="true">
-              <source src="http://99.9.62.40:3000/shared/SampleVideo_1080x720_1mb.mp4"/>
-       </video>
-       <!-- <audio controls="true"><source src=""></audio> -->
+       <video
+          class="dashjs-player embed-responsive-item img-responsive" 
+          data-html5-video="{{view.mediaSrc}}"
+          data-preload="auto"
+          data-autoplay="true"
+          data-controls="true">
      </div>
    </div>
    <div class="col-sm-12 col-md-4">
      <div class="well well-sm library">
-       <ul>
-        <li ng-if="!view.files">No files in library</li>
-        <li ng-if="view.files" ng-repeat="(key, value) in view.files">{{view.user.ip}}:{{view.user.port}} - {{key}}</li>
-       </ul>
+        
+        <ul class="no-icon">
+          <li><button class="btn btn-default pull-right" ng-click="view.getLibrary()">Refresh Library <i class="fa fa-refresh"></i></button></li>
+          <li ng-if="!view.files">No files in library</li>
+          <li ng-if="view.files" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> {{file.name}}</li>
+        </ul>
      </div>
    </div>
  </div>

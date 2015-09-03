@@ -1,71 +1,31 @@
 //Connection Controller
 module.exports = function (Connections) {
   var Connection = Connections.Connections,
-      request = require('request');
+      request = require('request'),
+      mime = require('mime-types');
 
-    //Add or Update client-server connection
+  //Add or Update client-server connection
   return {
-     addConnection: function(req, res) {
+    addConnection: function(req, res) {
       //Map data
-      var userId = req.body.userid;
-      var ip = req.connection.remoteAddress;
-      var port = req.body.port;
+      var userId = req.body.userid,
+          ip = req.connection.remoteAddress,
+          port = req.body.port;
       
-      //Verify connection before saving to database
-      if (verifyConnection(ip, port)) {
-        Connection.create({
-          userId: userId,
-          IP: ip,
-          Port: port,
-          Verified: 1
-        })
-        .then(function() {
-          Connection.findOrCreate({
-            where: {userId: userId}
-          });
-        })
-        .spread(function (connection, created) {
-          res.send("Connection Verified");
+      request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
+        Connection.findOrCreate({
+          where: {
+            UserId: userId,
+            IP: ip,
+            Port: port
+          }
+        }).spread(function(connection, created) {
+          var verified = (!err && response.statusCode === 200);
+          connection.updateAttributes({ Verified: verified}); 
+          res.send("Connection" + (verified ? " is ": " is not " ) + "verified." );
+        }).catch(function (err) {
+          res.status(500).send(err);
         });
-      //Unable to verify connection
-      } else {
-        Connection.create({
-          userId: userId,
-          IP: ip,
-          Port: port,
-          Verified: 0
-        })
-        .then(function() {
-          Connection.findOrCreate({
-            where: {userId: userId}
-          });
-        })
-        .spread(function (connection, created) {
-          res.send("Connection not verified");
-        });
-      }
-    },
-    
-    //Verify Client-Server Connection
-    verifyConnection: function(ip, port){
-      //Make call to client-server using ip:port/verify
-      return request.get("http://"+ip+":"+port+"/verify", function(err, res, body) {
-        var UserId = req.body.userid;
-        var ip = req.connection.remoteAddress;
-        var port = req.body.port;
-        //If user connection exists, update
-        if (verifyConnection(ip, port)) {
-          Connection.findOrCreate({
-            where: {
-              UserId: UserId,
-              IP: ip,
-              Port: port
-              //Field (bool) if connection has been verified
-            }
-          }).spread(function(connection, created){
-            res.send(connection);
-          });
-        }
       });
     },
     //Query client-server for library
@@ -77,23 +37,35 @@ module.exports = function (Connections) {
         })
         .then(function(conn) {
           if (!conn) {
-            res.send({});
+            res.send([]);
             return;
           }
 
-          request.get("http://"+conn.IP+":"+conn.Port+"/library", function (err, response, body) {
+          var baseUrl = "http://"+conn.IP+":"+conn.Port;
+          request.get(baseUrl+"/library", function (err, response, body) {
             //On success, send JSON library to parse in view
-            if (!err && res.statusCode === 200) {
+            if (!err && response.statusCode === 200) {
+              var results = [];
+              for (var key in JSON.parse(body)) {
+                var file = {};
+                file.url = baseUrl+"/shared/"+key;
+                file.mime = mime.lookup(key);
+                file.name = decodeURIComponent(key).split('/').splice(-1)[0].split('.')[0];
+                file.isAudio = file.mime.split('/')[0].toLowerCase() === "audio";
+                file.isVideo = file.mime.split('/')[0].toLowerCase() === "video";
+
+                results.push(file);
+
+
+              }
               //Consider manipulating the data here to create an object of url, name, media type, isAudio, isVideo to offload this from the client side
-              res.send(body);
+              res.send(results);
             } else {
               console.log("Unable to fetch user library from client-server: ", err);
-              res.send({});
+              res.send([]);
             }
           });
         });
-
-      //Make call to client-server 
     },
   }; // End of return
 };
