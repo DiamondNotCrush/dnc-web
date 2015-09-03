@@ -6,7 +6,7 @@ module.exports = function (Users) {
   return {
 
     //userLogin
-    userLogin: function(req, res, next) {
+    userLogin: function(req, res) {
       // Add support to sign via username or email
       var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
       var field = req.body.username.match(regExp) ? {email: req.body.username} : {username: req.body.username};
@@ -16,31 +16,36 @@ module.exports = function (Users) {
         where: field
       })
       .then(function (user) {
-        //Un-Hashed Check
-        if (user.password === password) {
-          res.send("User Validated");
+        //Check if supplied password matches stored password
+        if (user.comparePasswords(password)) {
+          
+          //save session
+          req.session.save(function (err) {
+            if (err) {
+              console.log("Unable to save session");
+            }
+          });
+
+          //build user response object
+          var userObj = {
+            id: user.dataValues.id,
+            username: user.dataValues.username,
+            email: user.dataValues.email
+          };
+          //return user object
+          res.send(userObj);
+        } else {
+          //send empty object (for now) when not auth'ed
+          res.send({});
         }
       })
-      .success(function (user) {
-        //Verify password and username/email
-        user.comparePasswords(password, function (err, isMatch) {
-          if (isMatch) {
-            req.session.save(function (err) {
-              if (err) {
-                console.log("Unable to save session: ", err);
-              }
-            });
-            //Set session user id
-            req.session.userid = user.id;
-          } else {
-            res.send("Unable to authenticate");
-          }
-        });
+      .catch(function (err) {
+        console.log("Error logging user in: ", err);
       });
     },
 
     //userLogout
-    userLogout: function(req, res) {
+    userLogout: function (req, res) {
       //destroy session
       req.session.destroy(function (err) {
         if (err) {
@@ -52,24 +57,27 @@ module.exports = function (Users) {
     },
 
     //Add user
-    addUser: function(req, res) {
+    addUser: function (req, res) {
       var username = req.body.username,
           email = req.body.email,
           password = req.body.password;
       
-      User.build({
-        username: username,
-        email: email, 
-        password: password
-      })
-      .setToken()
-      .save(function(user){
-        //return userid also
-        console.log("Saved user to database: ", user);
-      })
-      .catch(function(err){
-        console.log("Error saving: ", err);
+      User.create({
+          username: username,
+          email: email,
+          password: password
+        })
+      .then(function (user) {
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
       });
+
     },
 
     //updateUser
@@ -77,17 +85,22 @@ module.exports = function (Users) {
       var id = req.params.id;
       var username = req.body.username;
       var email = req.body.email;
-      var password = req.body.password;
 
       User.update({
         username: username,
         email: email,
-        password: password
       }, {
         where: {id: id}
       })
       .then(function (user) {
-        res.send(user);
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
       })
       .catch(function (err) {
         console.log("Error updating user: ", err);
@@ -101,7 +114,14 @@ module.exports = function (Users) {
         where: {id: id}
       })
       .then(function (user) {
-        res.send(user);
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
       })
       .catch(function (err) {
         console.log("Error fetching user: ", err);

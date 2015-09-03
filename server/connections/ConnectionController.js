@@ -45,6 +45,7 @@ module.exports = function (Connections) {
         });
       }
     },
+    
     //Verify Client-Server Connection
     verifyConnection: function(ip, port){
       //Make call to client-server using ip:port/verify
