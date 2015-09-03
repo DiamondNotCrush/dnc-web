@@ -59,6 +59,14 @@ hr {
   cursor: pointer;
 }
 
+.no-icon{
+  list-style-type: none;
+}
+
+video {
+  background-color: rgba(0,0,0,.7);
+}
+
 @media (min-width: 768px) {
   header {
     min-height: 100%;

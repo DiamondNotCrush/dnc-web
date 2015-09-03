@@ -9,14 +9,17 @@ angular
 
 
     _this.play = function(file) {
-      _this.mediaSrc = file.url;
+      // _this.mediaSrc = file.url;
+      //Anti-pattern. Change to not alter DOM from controller.
+      var video = document.getElementsByTagName('video')[0];
+      video.src = file.url;
+      video.load();
     };
 
     _this.getLibrary = function(){
       view.Files.query({id:_this.user.id})
         .$promise
         .then(function(files) {
-          console.log(files);
           _this.files = files;
         });
     };
