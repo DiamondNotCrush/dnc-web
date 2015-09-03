@@ -64,7 +64,7 @@ hr {
 }
 
 video {
-  background-color: rgba(0,0,0,.7);
+  background-color: rgb(0,0,0);
 }
 
 @media (min-width: 768px) {
