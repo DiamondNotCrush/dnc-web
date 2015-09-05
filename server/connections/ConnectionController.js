@@ -9,7 +9,7 @@ module.exports = function (Connections) {
     addConnection: function(req, res) {
       //Map data
       var userId = req.body.userid,
-          ip = req.connection.remoteAddress,
+          ip = req.ip,
           port = req.body.port;
       
       request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
