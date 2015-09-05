@@ -13,6 +13,7 @@ module.exports = function (Connections) {
           port = req.body.port;
       
       request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
+        var verified = (!err && response.statusCode === 200);
         Connection.findOrCreate({
           where: {
             UserId: userId,
@@ -20,9 +21,8 @@ module.exports = function (Connections) {
             Port: port
           }
         }).spread(function(connection, created) {
-          var verified = (!err && response.statusCode === 200);
           connection.updateAttributes({ Verified: verified}); 
-          res.send("Connection" + (verified ? " is ": " is not " ) + "verified." );
+          res.send(ip + ':' + port + (verified ? ' is ': ' is not ' ) + 'verified.' );
         }).catch(function (err) {
           res.status(500).send(err);
         });

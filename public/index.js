@@ -25,7 +25,8 @@ var app = window.app = angular
       .state('view', {
         controller: 'viewController',
         controllerAs: 'view',
-        templateUrl: 'view/view.html'
+        templateUrl: 'view/view.html',
+        requiresLogin: true
       })
       .state('login', {
         controller: 'loginController',
@@ -40,8 +41,18 @@ var app = window.app = angular
       .state('account', {
         controller: 'accountController',
         controllerAs:'account',
-        templateUrl:'account/account.html'
+        templateUrl:'account/account.html',
+        requiresLogin: true
       });
 
       $locationProvider.html5Mode(true);
+  }])
+  .run(['$rootScope', '$state', 'user', function($rootScope, $state, user){
+    $rootScope.$on('$stateChangeStart', 
+      function(event, toState, toParams, fromState, fromParams){
+        if (toState.requiresLogin && !user.details.isAuthorized) {
+          $state.transitionTo('login');
+          event.preventDefault(); 
+        }
+      });
   }]);
