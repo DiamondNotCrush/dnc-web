@@ -1,7 +1,23 @@
 angular
   .module('service.auth', [])
-  .service('auth', ['$resource', 'user', function($resource, user){
-    return {
-      login: $resource('/user/login')
-    };
+  .service('auth', ['$resource', function($resource) {
+    return $resource('', null, {
+        login: {
+          method: 'POST',
+          url: '/user/login'
+        },
+        update: {
+          method: 'POST',
+          url: '/user/updateUser'
+        },
+        register: {
+          method: 'POST',
+          url: '/user/addUser'
+        },
+        get: {
+          method: 'GET',
+          url: '/findUser/:id',
+          params: {id:'@id'}
+        }
+      });
   }]);
