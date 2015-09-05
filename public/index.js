@@ -6,8 +6,11 @@ var app = window.app = angular
   'app.main',
   'app.view',
   'app.login',
+  'app.signup',
+  'app.account',
   'factory.user',
-  'service.view'
+  'service.view',
+  'service.auth'
   ])  
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');
@@ -28,6 +31,16 @@ var app = window.app = angular
         controller: 'loginController',
         controllerAs: 'login',
         templateUrl: 'login/login.html'
+      })
+      .state('signup', {
+        controller: 'signupController',
+        controllerAs:'signup',
+        templateUrl:'signup/signup.html'
+      })
+      .state('account', {
+        controller: 'accountController',
+        controllerAs:'account',
+        templateUrl:'account/account.html'
       });
 
       $locationProvider.html5Mode(true);
