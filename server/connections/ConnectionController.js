@@ -16,12 +16,10 @@ module.exports = function (Connections) {
         var verified = (!err && response.statusCode === 200);
         Connection.findOrCreate({
           where: {
-            UserId: userId,
-            IP: ip,
-            Port: port
+            UserId: userId
           }
         }).spread(function(connection, created) {
-          connection.updateAttributes({ Verified: verified}); 
+          connection.updateAttributes({ Verified: verified, IP: ip, Port: port}); 
           res.send(ip + ':' + port + (verified ? ' is ': ' is not ' ) + 'verified.' );
         }).catch(function (err) {
           res.status(500).send(err);
@@ -67,5 +65,8 @@ module.exports = function (Connections) {
           });
         });
     },
+    verifyConnection: function(req,res) {
+      res.send(200);
+    }
   }; // End of return
 };
