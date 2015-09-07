@@ -82,6 +82,9 @@ module.exports = function (Users) {
         };
         //return user object
         res.send(userObj);
+      })
+      .catch(function(err){
+        res.status(500).send(err);
       });
 
     },
