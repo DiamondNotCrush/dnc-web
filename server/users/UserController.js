@@ -8,8 +8,14 @@ module.exports = function (Users) {
     //userLogin
     userLogin: function(req, res) {
       // Add support to sign via username or email
-      var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
-      var field = req.body.username.match(regExp) ? {email: req.body.username} : {username: req.body.username};
+      var field = {};
+      if (req.body.email) {
+        field.email = decodeURIComponent(req.body.email);
+      } else {
+        var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
+        field = decodeURIComponent(req.body.username).match(regExp) ? {email: req.body.username} : {username: req.body.username};
+      }
+
       var password = req.body.password;
 
       User.findOne({
@@ -58,8 +64,8 @@ module.exports = function (Users) {
 
     //Add user
     addUser: function (req, res) {
-      var username = req.body.username,
-          email = req.body.email,
+      var username = decodeURIComponent(req.body.username),
+          email = decodeURIComponent(req.body.email),
           password = req.body.password;
       
       User.create({

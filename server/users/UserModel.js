@@ -7,8 +7,16 @@ module.exports = function (sequelize) {
   var SALT_WORK_FACTOR = 10;
   
   var User = sequelize.define("Users", {
-    username: Sequelize.STRING,
-    email: Sequelize.STRING,
+    username: {
+      type: Sequelize.STRING,
+      allowNulls: false,
+      unique: true
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNulls: false,
+      unique: true
+    },
     password: {
       type: Sequelize.STRING,
       set: function (val) {
@@ -16,7 +24,8 @@ module.exports = function (sequelize) {
         var hash = bcrypt.hashSync(val, salt);
 
         this.setDataValue("password", hash);
-      }
+      },
+      allowNulls: false
     }
   }, {
     instanceMethods: {
