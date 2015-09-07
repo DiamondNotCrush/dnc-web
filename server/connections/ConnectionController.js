@@ -12,7 +12,11 @@ module.exports = function (Connections) {
           ip = req.body.ip || req.ip,
           port = req.body.port;
       
-      request.get('http://'+ip+':'+port+"/verify", function(err, response, body) {
+      request({
+        uri: 'http://'+ip+':'+port+'/verify',
+        method: 'GET',
+        timeout: 5000
+      }, function(err, response, body) {
         var verified = (!err && response.statusCode === 200);
         Connection.findOrCreate({
           where: {
