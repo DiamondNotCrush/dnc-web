@@ -63,6 +63,9 @@ module.exports = function (Connections) {
               res.send([]);
             }
           });
+        })
+        .catch(function(err) {
+          res.status(500).send(err);
         });
     },
     verifyConnection: function(req,res) {

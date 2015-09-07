@@ -11,7 +11,7 @@ var Users = require("./users/UserModel")(sequelize);
 var Connections = require("./connections/ConnectionModel")(sequelize);
 
 // //Setup database tables
-Users.User.hasOne(Connections.Connections, {as: 'UserId', unique: true});
+Users.User.hasMany(Connections.Connections, {as: 'UserId'});
 sequelize.sync();
 
 //Pass app and express to middleware routing
