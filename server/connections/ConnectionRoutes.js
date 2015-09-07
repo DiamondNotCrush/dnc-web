@@ -7,5 +7,5 @@ module.exports = function (app, Connections) {
   //Library route for user
   app.get('/library/:id(\\d+)', connectionController.fetchUserLibrary);
   //Verify user's connection
-  app.get('/verify/:port(\\d+)', connectionController.verifyConnection);
+  app.post('/verify', connectionController.verifyConnection);
 };

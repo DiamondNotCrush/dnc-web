@@ -9,7 +9,7 @@ module.exports = function (Connections) {
     addConnection: function(req, res) {
       //Map data
       var userId = req.body.userid,
-          ip = req.ip,
+          ip = req.body.ip || req.ip,
           port = req.body.port;
       
       request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
@@ -20,7 +20,7 @@ module.exports = function (Connections) {
           }
         }).spread(function(connection, created) {
           connection.updateAttributes({ Verified: verified, IP: ip, Port: port}); 
-          res.send(ip + ':' + port + (verified ? ' is ': ' is not ' ) + 'verified.' );
+          res.status(201).send({ip: ip, port: port, verified: verified});
         }).catch(function (err) {
           res.status(500).send(err);
         });
@@ -69,7 +69,16 @@ module.exports = function (Connections) {
         });
     },
     verifyConnection: function(req,res) {
-      res.send(200);
+      var ip = req.body.ip || req.ip,
+          port = req.body.port;
+      
+      request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
+        if (!err && response.statusCode === 200) {
+          res.status(200).send({ip: ip, port: port, verified: true});
+        } else {
+          res.status(504).send({ip: ip, port: port, verified: false});
+        }
+      });
     }
   }; // End of return
 };
