@@ -22,9 +22,9 @@
 ## Project Overview
   Dnc Media is an open-source cloud solution for storing and accessing your music and movies. The project has 3 parts: 
     
-    1. [Client Server](https://github.com/DiamondNotCrush/dnc-client)
-    1. [Web Server]
-    1. [Mobile App](https://github.com/DiamondNotCrush/dnc-mobile)
+  1. [Client Server](https://github.com/DiamondNotCrush/dnc-client)
+  1. [Web Server](https://github.com/DiamondNotCrush/dnc-web)
+  1. [Mobile App](https://github.com/DiamondNotCrush/dnc-mobile)
   
   The client server is installed on the user's computer that has access to all of their media. The user can easily signup, login and quickly do all the necessary setup needed to begin streaming their movies and music from the web or mobile app.
   
