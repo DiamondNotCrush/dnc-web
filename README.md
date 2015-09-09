@@ -31,7 +31,7 @@
   
   The web server is used to store the user information and act as the "single-source-of-truth" for all authentication requests. A user can also use the web server to access their media when away from their main computer.
   
-  The mobile app is just another, easy way for a user to access their files.
+  The mobile app is just another easy way for a user to access their files.
   
 ## Usage
 
