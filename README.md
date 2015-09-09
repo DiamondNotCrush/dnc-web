@@ -35,18 +35,17 @@
   
 ## Usage
 
-> Some usage instructions
+This repo contains the web client for DnC Media. The web client acts as the API for all necessary user actions (ie. login/authentication, signup, client connection validation, etc.) The web client is written in javascript on a Node.js/Express/MySQL backend and Angular.js for the front-end. This client will run on any server that supports Node.js and MySQL.
 
 ## Requirements
+
+The only requirements to run this client are a server that can support Node.js and a MySQL database. There will be some hardcoded API calls from the client server and mobile app that will need to be changed to the new URL of this web client.
 
 ## Development
 
 ### Installing Dependencies
 
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
-
+To install dependencies, for this client, run ```npm install```
 
 ## Contributing
 
