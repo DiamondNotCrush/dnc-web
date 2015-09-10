@@ -1,7 +1,12 @@
 .library {
   height: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: rgba(0,0,0,0.5); 
+}
+
+.library button {
+  background-color: rgba(0,0,0,0.8);
+  color: white;
 }
 
 .pointer {

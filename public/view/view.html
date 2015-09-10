@@ -14,7 +14,7 @@
      <div class="well well-sm library">
         
         <ul class="no-icon">
-          <li><button class="btn btn-default pull-right" ng-click="view.getLibrary()">Refresh Library <i class="fa fa-refresh"></i></button></li>
+          <li><button class="btn btn-default center-block" ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></button></li>
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
           <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> {{file.name}} <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
         </ul>
