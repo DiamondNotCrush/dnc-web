@@ -48,13 +48,15 @@ module.exports = function (Connections) {
             //On success, send JSON library to parse in view
             if (!err && response.statusCode === 200) {
               var results = [];
-              for (var key in JSON.parse(body)) {
+              var library = JSON.parse(body);
+              for (var key in library) {
                 var file = {};
                 file.url = baseUrl+'/shared/'+key;
                 file.mime = mime.lookup(key);
                 file.name = decodeURIComponent(key).split('/').splice(-1)[0].split('.')[0];
                 file.isAudio = file.mime.split('/')[0].toLowerCase() === 'audio';
                 file.isVideo = file.mime.split('/')[0].toLowerCase() === 'video';
+                file.picture = library[key];
 
                 results.push(file);
 

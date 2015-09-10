@@ -1,10 +1,6 @@
 angular
   .module('app.main', [])
-  .controller('mainController', ['$state','user', function($state,user){
+  .controller('mainController', ['$state',function($state){
     var _this = this;
-    _this.user = user.details;
-    _this.logout = function() {
-      _this.user = { isAuthorized: false};
-      $state.go('main');
-    };
+    _this.state = $state;
   }]);

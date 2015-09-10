@@ -2,6 +2,7 @@ var app = window.app = angular
   .module('app', [
   'ngResource',
   'ui.router',
+  'snap',
   'media',
   'app.main',
   'app.view',
@@ -20,12 +21,15 @@ var app = window.app = angular
         url: '/',
         controller: 'mainController',
         controllerAs: 'main',
-        templateUrl: 'main/main.html'
+        templateUrl: 'main/main.html',
+        requiresLogin: true
       })
       .state('view', {
         controller: 'viewController',
         controllerAs: 'view',
         templateUrl: 'view/view.html',
+        parent: 'main',
+        title: 'Media Player',
         requiresLogin: true
       })
       .state('login', {
@@ -42,6 +46,8 @@ var app = window.app = angular
         controller: 'accountController',
         controllerAs:'account',
         templateUrl:'account/account.html',
+        parent: 'main',
+        title: 'Account Settings',
         requiresLogin: true
       });
 
