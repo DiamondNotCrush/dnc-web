@@ -3,16 +3,26 @@ angular
   .controller('viewController', ['view', 'user', function(view, user) {
     var _this = this;
     _this.user = user.details;
+    _this.showAudio = false;
+    _this.showVideo = true;
+    _this.mediaSrc = '';
 
-    view.File.files()
-      .$promise
-      .then(function(data) {
-        console.log(data);
-        _this.files = data;
-      });
-    //Service to pull library and format links
 
-    //Functions to set source of media player and start playing
+    _this.play = function(file) {
+      // _this.mediaSrc = file.url;
+      //Anti-pattern. Change to not alter DOM from controller.
+      var video = document.getElementsByTagName('video')[0];
+      video.src = file.url;
+      video.load();
+    };
 
-    //Functions to determine type of media from extension
+    _this.getLibrary = function(){
+      view.Files.query({id:_this.user.id})
+        .$promise
+        .then(function(files) {
+          _this.files = files;
+        });
+    };
+
+    _this.getLibrary();
   }]);

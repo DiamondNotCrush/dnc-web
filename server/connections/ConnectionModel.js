@@ -4,7 +4,7 @@ module.exports = function (sequelize) {
   var Connections = sequelize.define('Connections', {
     IP: Sequelize.STRING,
     Port: Sequelize.INTEGER,
-    File: Sequelize.STRING
+    Verified: Sequelize.BOOLEAN
   });
 
   return {

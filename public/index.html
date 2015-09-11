@@ -3,7 +3,12 @@
 <head>
   <base href="/">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="img/dnc128.png" type="image/png" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/angular-snap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>DnC Media</title>
   <!--[if lt IE 9]>
@@ -13,41 +18,26 @@
 </head>
 
 <body ng-controller="mainController as main">
-  <div class="container-fluid">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" ui-sref="main">DnC Media</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li ng-if="main.user.isAuthorized"><a ui-sref="view">View</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li ng-if="!main.user.isAuthorized"><a ui-sref="login">Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="col-xs-12" ui-view></div>
+  <div class="ui-base">
+    <div ui-view></div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
- 
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.js/1.9.3/snap.min.js"></script>
+  <script src="scripts/angular-snap.min.js"></script>
   <!-- TODO: Concat and uglify local scripts into one file -->
   <script src="index.js"></script>
   <script src="main/main.js"></script>
   <script src="view/view.js"></script>
   <script src="view/viewService.js"></script>
+  <script src="view/ng-media.js"></script>
   <script src="login/login.js"></script>
   <script src="login/userFactory.js"></script>
+  <script src="login/authService.js"></script>
+  <script src="signup/signup.js"></script>
+  <script src="account/account.js"></script>
 </body>
 </html>

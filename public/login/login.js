@@ -1,13 +1,17 @@
 angular
   .module('app.login', [])
   .controller('loginController', ['$state', 'user', function($state, user){
-    this.login = function(){
-      user.details.name = 'Owen';
-      user.details.ip = 'http://99.9.62.40';
-      user.details.port = 3000;
-      user.details.id = 2;
-      user.details.isAuthorized = true;
+    this.email = '';
+    this.password = '';
 
-      $state.go('view');
+    this.login = function(){
+      user.auth(this.email, this.password, 'login', function() {
+
+        $state.go('view');
+       });
     };
+
+    if (user.isAuthorized) {
+      $state.go('view');
+    }
   }]);

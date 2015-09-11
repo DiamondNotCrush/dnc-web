@@ -1,103 +1,197 @@
 //User Controller
 module.exports = function (Users) { 
-  var User = Users.User;
-  var request = require("request");
+  var User = Users.User,
+      request = require("request");
 
   return {
-    //userLogin
-    userLogin: function(req, res, next) {
-      // Add support to sign via username of email
-      var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
-      var field = req.body.username.match(regExp) ? email : username;
-      var id = req.body.username;
-      var password = req.body.password;
+    /*
+     * userLogin finds the entry in the database that corresponds to either the username or email, 
+     *  and then compares the password to the stored bcrypt hash
+     *
+     * Expected object in req.body:
+     *  {
+     *    username: <string>,
+     *    email: <string>,
+     *    password: <string>
+     *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
+     */
+    userLogin: function(req, res) {
+      var field = {};
+      if (req.body.email) {
+        field.email = decodeURIComponent(req.body.email);
+      } else {
+        var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/; //Used to check if an email address was sent as the username.
+        field = decodeURIComponent(req.body.username).match(regExp) ? {email: req.body.username} : {username: req.body.username};
+      }
 
       User.findOne({
-        where: {field: username}
+        where: field
       })
       .then(function (user) {
-        //Un-Hashed Check
-        if (user.password === password) {
-          res.send("User Validated");
-        }
+        userHelper(user, req.body.password, res, function(){ sendUser(user, res); });
       })
       .catch(function (err) {
-        console.log("Error verifying user: ", err);
+        res.status(500).send(err);
       });
     },
 
-    //userLogout
-    userLogout: function(req, res) {
+    // userLogout: function (req, res) {
+    //   //destroy session
+    //   req.session.destroy(function (err) {
+    //     if (err) {
+    //       console.log("Unable to destroy session: ", err);
+    //     }
+    //   });
+    //   res.redirect(301, "/");
+    //   res.send();
+    // },
 
-    },
 
-    //Add user
-    addUser: function(req, res) {
-      var username = req.body.username,
-          email = req.body.email,
+    /*
+     * addUser creates a new entry in the database for the user
+     *
+     * Expected object in req.body:
+     *  {
+     *    username: <string>,
+     *    email: <string>,
+     *    password: <string>
+     *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
+     */
+    addUser: function (req, res) {
+      var username = decodeURIComponent(req.body.username),
+          email = decodeURIComponent(req.body.email),
           password = req.body.password;
-      //Create user if user does not exist
+      
       User.create({
-        username: username,
-        email: email, 
-        password: password
+          username: username,
+          email: email,
+          password: password
+        })
+      .then(function (user) {
+        sendUser(user, res);
       })
-        .then(function (){
-          User.findOrCreate({
-            where: {username: username}
-          })
-          .spread(function (user, created) {
-            res.send(user);
-          });
-        });
+      .catch(function(err){
+        res.status(500).send(err);
+      });
+
     },
 
-    //updateUser
+    /*
+     * udpateUser updates the entry in the db for the user if the user exists.
+     *
+     * Expected object in req.body:
+     *  {
+     *    id: <number>,
+     *    password: <string>,
+     *    email: <string>, -- Only if changing
+     *    newPassword: <string> -- Only if changing
+     *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>,
+     *    status: [<string>]
+     *  }
+     */
     updateUser: function(req, res) {
-      var id = req.params.id;
-      var username = req.body.username;
-      var email = req.body.email;
-      var password = req.body.password;
-
-      User.update({
-        username: username,
-        email: email,
-        password: password
-      }, {
-        where: {id: id}
-      })
-      .then(function (user) {
-        res.send(user);
-      })
-      .catch(function (err) {
-        console.log("Error updating user: ", err);
-      });
-    },
-    //find user
-    findUser: function (req, res) {
-      var id = req.params.id;
       User.findOne({
-        where: {id: id}
+        where: {id: req.body.id}
       })
       .then(function (user) {
-        res.send(user);
+        userHelper(user, req.body.password, res, function() {
+          var status = [];
+          if (req.body.email && req.body.email.length) {
+            user.updateAttributes({email: decodeURIComponent(req.body.email)});
+            status.push('Email address changed.');
+          }
+
+          if (req.body.newPassword && req.body.newPassword.length) {
+            user.updateAttributes({password: req.body.newPassword});
+            status.push('Password changed.');
+          }
+
+          if (status.length > 0) {
+            User.findOne({
+              where: {id: req.body.id}
+            }).then(function(user){
+              res.status(201).send({
+                id: user.dataValues.id,
+                username: user.dataValues.username,
+                email: user.dataValues.email,
+                status: status
+              });
+            });
+          } else {
+            res.status(200).send({
+              id: user.dataValues.id,
+                username: user.dataValues.username,
+                email: user.dataValues.email,
+                status: ['No changes made.']
+            });
+          }
+        });
       })
       .catch(function (err) {
-        console.log("Error fetching user: ", err);
+        res.status(500).send(err);
       });
     },
 
-    //Query client-server for library
-    fetchUserLibrary: function (ip, port) {
-      //Make call to client-server 
-      request.post("http://"+ip+":"+port+"/library", function (err, res, body) {
-        //On success, send JSON library to parse in view
-        if (!error && res.statusCode === 200) {
-          //call function to parse in view
-        } else {
-          console.log("Unable to fetch user library from client-server: ", err);
-        }
+    /*
+     * findUser returns the user from the db.
+     *
+     * Expects id as a parameter: e.g. /3
+     *  
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
+     */
+    findUser: function (req, res) {
+      User.findOne({
+        where: {id: req.params.id}
+      })
+      .then(function (user) {
+        sendUser(user, res);
+      })
+      .catch(function (err) {
+        res.status(500).send(err);
       });
     },
   }; //End return
 };
+
+function userHelper(user, pass, res, callback) {
+  if (!user) {
+    res.status(401).send({authorized: false});
+  } else if (user.comparePasswords(pass)) { 
+    callback(user);
+  } else {
+    res.status(401).send({authorized: false});
+  }
+}
+
+function sendUser(user, res) {
+  res.status(200).send({
+    id: user.dataValues.id,
+    username: user.dataValues.username,
+    email: user.dataValues.email
+  });
+}

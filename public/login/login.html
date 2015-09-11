@@ -1,9 +1,29 @@
-<div class=" well well-sm col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-  <div class="form-group">
-    <input type="email" class="form-control" ng-model="login.email" id="email" placeholder="Email Address" />
+<div class="login-page">
+  <div class="img-container">
+    <div class="text-center pull-right photo">
+      <img src="img/dncavatar.png" class="user-avatar img-circle img-responsive" />
+        <h1>DnC<br/ > <span>MEDIA PORTAL</span><br /></h1>
+      </div>
+    </div>
+    
+    <div class="form-content">
+      <form role="form" class="bottom-75" ng-submit="login.login()">
+      <div class="table-form">
+        <div class="form-groups">
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" id="email" ng-model="login.email" placeholder="EMAIL">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-lg" id="password" ng-model="login.password" placeholder="PASSWORD">
+          </div>
+          
+            
+        </div>  
+        <div class="button-container">
+          <button type="submit" class="btn btn-default login"><i class="fa fa-chevron-right fa-5x"></i></button>
+        </div>
+      </div>
+      </form>
+    </div>      
   </div>
-  <div class="form-group">
-    <input type="password" class="form-control" ng-model="login.password" id="password" placeholder="Password" />
-  </div>
-  <button class="btn btn-default" ng-click="login.login()">Login</button>
 </div>
