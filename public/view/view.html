@@ -7,16 +7,16 @@
           data-html5-video="{{view.mediaSrc}}"
           data-preload="auto"
           data-autoplay="true"
-          data-controls="true">
+          data-controls="true"
+          ng-show="!view.files">
      </div>
    </div>
-   <div class="col-xs-12 col-md-4">
+   <div class="col-xs-12">
      <div class="well well-sm library">
-        
         <ul class="no-icon">
           <li><button class="btn btn-default center-block" ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></button></li>
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
-          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> {{file.name}} <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
+          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> <img src="{{file.image}}"></span><span>{{file.name}}</span> <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
         </ul>
      </div>
    </div>
