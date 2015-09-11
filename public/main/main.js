@@ -1,7 +1,6 @@
 angular
   .module('app.main', [])
-  .controller('mainController', ['user', function(user){
+  .controller('mainController', ['$state',function($state){
     var _this = this;
-    _this.user = user.details;
-    
+    _this.state = $state;
   }]);

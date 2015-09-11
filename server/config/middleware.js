@@ -8,6 +8,7 @@ module.exports = function (app, express, sequelize, Users, Connections) {
   var connectionRouter = express.Router();
   var userRouter = express.Router();
 
+  app.enable('trust proxy');
   app.set('view engine', 'html');
   app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({extended: true}));

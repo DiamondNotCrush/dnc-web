@@ -1,0 +1,13 @@
+<div class=" well well-sm col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+  <div class="form-group">
+    <input type="email" class="form-control" ng-model="signup.email" id="email" placeholder="Email Address" novalidate ng-required />
+  </div>
+  <div class="form-group">
+    <input type="password" class="form-control" ng-model="signup.password" id="password" placeholder="Password" novalidate ng-required />
+  </div> 
+  <!-- Ensure passwords match -->
+  <div class="form-group">
+    <input type="password" class="form-control" ng-model="signup.password2" id="password2" placeholder="Password Again" novalidate ng-required />
+  </div> 
+  <button class="btn btn-default" ng-click="signup.register()">Login</button>
+</div>

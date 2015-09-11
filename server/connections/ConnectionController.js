@@ -9,20 +9,22 @@ module.exports = function (Connections) {
     addConnection: function(req, res) {
       //Map data
       var userId = req.body.userid,
-          ip = req.connection.remoteAddress,
+          ip = req.body.ip || req.ip,
           port = req.body.port;
       
-      request.get("http://"+ip+":"+port+"/verify", function(err, response, body) {
+      request({
+        uri: 'http://'+ip+':'+port+'/verify',
+        method: 'GET',
+        timeout: 5000
+      }, function(err, response, body) {
+        var verified = (!err && response.statusCode === 200);
         Connection.findOrCreate({
           where: {
-            UserId: userId,
-            IP: ip,
-            Port: port
+            UserId: userId
           }
         }).spread(function(connection, created) {
-          var verified = (!err && response.statusCode === 200);
-          connection.updateAttributes({ Verified: verified}); 
-          res.send("Connection" + (verified ? " is ": " is not " ) + "verified." );
+          connection.updateAttributes({ Verified: verified, IP: ip, Port: port}); 
+          res.status(201).send({ip: ip, port: port, verified: verified});
         }).catch(function (err) {
           res.status(500).send(err);
         });
@@ -41,18 +43,20 @@ module.exports = function (Connections) {
             return;
           }
 
-          var baseUrl = "http://"+conn.IP+":"+conn.Port;
-          request.get(baseUrl+"/library", function (err, response, body) {
+          var baseUrl = 'http://'+conn.IP+':'+conn.Port;
+          request.get(baseUrl+'/library', function (err, response, body) {
             //On success, send JSON library to parse in view
             if (!err && response.statusCode === 200) {
               var results = [];
-              for (var key in JSON.parse(body)) {
+              var library = JSON.parse(body);
+              for (var key in library) {
                 var file = {};
-                file.url = baseUrl+"/shared/"+key;
+                file.url = baseUrl+'/shared/'+key;
                 file.mime = mime.lookup(key);
                 file.name = decodeURIComponent(key).split('/').splice(-1)[0].split('.')[0];
-                file.isAudio = file.mime.split('/')[0].toLowerCase() === "audio";
-                file.isVideo = file.mime.split('/')[0].toLowerCase() === "video";
+                file.isAudio = file.mime.split('/')[0].toLowerCase() === 'audio';
+                file.isVideo = file.mime.split('/')[0].toLowerCase() === 'video';
+                file.picture = library[key];
 
                 results.push(file);
 
@@ -61,11 +65,30 @@ module.exports = function (Connections) {
               //Consider manipulating the data here to create an object of url, name, media type, isAudio, isVideo to offload this from the client side
               res.send(results);
             } else {
-              console.log("Unable to fetch user library from client-server: ", err);
+              console.log('Unable to fetch user library from client-server: ', err);
               res.send([]);
             }
           });
+        })
+        .catch(function(err) {
+          res.status(500).send(err);
         });
     },
+    verifyConnection: function(req,res) {
+      var ip = req.body.ip || req.ip,
+          port = req.body.port;
+      
+      request({
+        uri: 'http://'+ip+':'+port+'/verify',
+        method: 'GET',
+        timeout: 5000
+      }, function(err, response, body) {
+        if (!err && response.statusCode === 200) {
+          res.status(200).send({ip: ip, port: port, verified: true});
+        } else {
+          res.status(504).send({ip: ip, port: port, verified: false});
+        }
+      });
+    }
   }; // End of return
 };

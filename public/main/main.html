@@ -1,9 +1,37 @@
-<header>
-  <div class="header-content">
-    <div class="header-content-inner">
-        <h1>The World is Your Theater</h1>
-        <hr>
-        <p>Access your media whenever, wherever.</p>
+<div class="dashboard-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 main">
+        <snap-drawer>
+          <div class="snap-menu">
+            <div class="sidebar-header text-center">
+              <img src="img/dncavatar.png" alt="" class="sidebar-img img-circle">
+            </div>
+            <ul class="snap-ul">
+              <li ng-class="{active: main.state.includes('view')}"><a ui-sref="view">HOME</a></li>
+              <li ng-class="{active: main.state.includes('account')}"><a ui-sref="account">ACCOUNT</a></li>
+              <li><a ui-sref="login">LOGOUT</a></li>
+            </ul>
+          </div>
+        </snap-drawer>
+        <snap-dragger></snap-dragger>
+        <snap-content snap-opt-tap-to-close="false">
+
+          <button snap-toggle ng-click="menuOpen = !menuOpen" class="menu-toggle">
+              <i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+              <i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+          </button>
+          
+          <div class="fr">
+            <h2>DnC <small>{{main.state.$current.title}}</small></h2>
+          </div>
+          <div class="jumbotron">
+            <div class="container">
+              <div ui-view></div>
+            </div>
+          </div>
+        </snap-content> 
+      </div>
     </div>
   </div>
-</header>
+</div>
