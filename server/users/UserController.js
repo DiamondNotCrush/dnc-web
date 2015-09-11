@@ -1,12 +1,12 @@
 //User Controller
-module.exports = function (Users, Connections) { 
+module.exports = function (Users) { 
   var User = Users.User,
-      Connection = Connections.Connections,
       request = require("request");
 
   return {
+
     //userLogin
-    userLogin: function(req, res, next) {
+    userLogin: function(req, res) {
       // Add support to sign via username or email
       var regExp = /([a-zA-Z0-9\.])+(@){1}([a-zA-Z0-9]{2,4})/;
       var field = req.body.username.match(regExp) ? {email: req.body.username} : {username: req.body.username};
@@ -16,40 +16,68 @@ module.exports = function (Users, Connections) {
         where: field
       })
       .then(function (user) {
-        //Un-Hashed Check
-        if (user.password === password) {
-          res.send("User Validated");
+        //Check if supplied password matches stored password
+        if (user.comparePasswords(password)) {
+          
+          //save session
+          req.session.save(function (err) {
+            if (err) {
+              console.log("Unable to save session");
+            }
+          });
+
+          //build user response object
+          var userObj = {
+            id: user.dataValues.id,
+            username: user.dataValues.username,
+            email: user.dataValues.email
+          };
+          //return user object
+          res.send(userObj);
+        } else {
+          //send empty object (for now) when not auth'ed
+          res.send({});
         }
       })
       .catch(function (err) {
-        console.log("Error verifying user: ", err);
+        console.log("Error logging user in: ", err);
       });
     },
 
     //userLogout
-    userLogout: function(req, res) {
-
+    userLogout: function (req, res) {
+      //destroy session
+      req.session.destroy(function (err) {
+        if (err) {
+          console.log("Unable to destroy session: ", err);
+        }
+      });
+      res.redirect(301, "/");
+      res.send();
     },
 
     //Add user
-    addUser: function(req, res) {
+    addUser: function (req, res) {
       var username = req.body.username,
           email = req.body.email,
           password = req.body.password;
-      //Create user if user does not exist
+      
       User.create({
-        username: username,
-        email: email, 
-        password: password
-      })
-        .then(function (){
-          User.findOrCreate({
-            where: {username: username}
-          })
-          .spread(function (user, created) {
-            res.send(user);
-          });
-        });
+          username: username,
+          email: email,
+          password: password
+        })
+      .then(function (user) {
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
+      });
+
     },
 
     //updateUser
@@ -57,22 +85,28 @@ module.exports = function (Users, Connections) {
       var id = req.params.id;
       var username = req.body.username;
       var email = req.body.email;
-      var password = req.body.password;
 
       User.update({
         username: username,
         email: email,
-        password: password
       }, {
         where: {id: id}
       })
       .then(function (user) {
-        res.send(user);
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
       })
       .catch(function (err) {
         console.log("Error updating user: ", err);
       });
     },
+
     //find user
     findUser: function (req, res) {
       var id = req.params.id;
@@ -80,39 +114,18 @@ module.exports = function (Users, Connections) {
         where: {id: id}
       })
       .then(function (user) {
-        res.send(user);
+        //build user response object
+        var userObj = {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          email: user.dataValues.email
+        };
+        //return user object
+        res.send(userObj);
       })
       .catch(function (err) {
         console.log("Error fetching user: ", err);
       });
-    },
-
-    //Query client-server for library
-    fetchUserLibrary: function (req, res) {
-      //Get connection ip and port from connections
-      Connection
-        .findOne({
-          where: { UserId: req.params.id }
-        })
-        .then(function(conn) {
-          if (!conn) {
-            res.send({});
-            return;
-          }
-
-          request.get("http://"+conn.IP+":"+conn.Port+"/library", function (err, response, body) {
-            //On success, send JSON library to parse in view
-            if (!err && res.statusCode === 200) {
-              //Consider manipulating the data here to create an object of url, name, media type, isAudio, isVideo to offload this from the client side
-              res.send(body);
-            } else {
-              console.log("Unable to fetch user library from client-server: ", err);
-              res.send({});
-            }
-          });
-        });
-
-      //Make call to client-server 
     },
   }; //End return
 };

@@ -6,9 +6,7 @@ module.exports = function (app, Users, Connections) {
   //Sign up route for user
   app.post('/addUser', userController.addUser);
   //Update User info
-  app.post('/updateUser/:id(\\d+)', userController.updateUser);
-  //Library route for user
-  app.get('/library/:id(\\d+)', userController.fetchUserLibrary);
+  app.post('/updateUser', userController.updateUser);
   
   app.get('/findUser/:id(\\d+)', userController.findUser);
 };

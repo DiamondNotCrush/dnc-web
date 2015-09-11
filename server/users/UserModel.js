@@ -9,47 +9,26 @@ module.exports = function (sequelize) {
   var User = sequelize.define("Users", {
     username: Sequelize.STRING,
     email: Sequelize.STRING,
-    password: Sequelize.STRING,
-    salt: Sequelize.STRING
+    password: {
+      type: Sequelize.STRING,
+      set: function (val) {
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(val, salt);
+
+        this.setDataValue("password", hash);
+      }
+    }
+  }, {
+    instanceMethods: {
+      comparePasswords: function (candidatePassword) {
+        var savedPassword = this.password;
+        return bcrypt.compareSync(candidatePassword, savedPassword);
+      }
+    }
   });
-
-  // User.hook("beforeValidate", function (next) {
-  //   var user = this;
-
-  //   // only hash password if it has been modified or is new
-  //   if (!user.changed("password")) {
-  //     return next();
-  //   }
-
-  //   //generate a salt
-  //   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-  //     if (err) {
-  //       return next(err);
-  //     }
-
-  //     //override the cleartext password with the hashed one
-  //     user.password = hash;
-  //     user.salt = salt;
-  //     next();
-  //   });
-
-  // });
 
   return {
     User: User,
-
-    comparePasswords: function (candidatePassword) {
-      var defer = Q.defer();
-      var savedPassword = this.password;
-      bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
-        if (err) {
-          defer.reject(err);
-        } else {
-          defer.resolve(isMatch);
-        }
-      });
-      return defer.promise;
-    }
   }; //End of return
 };
 
