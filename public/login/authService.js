@@ -8,7 +8,7 @@ angular
         },
         update: {
           method: 'POST',
-          url: '/user/updateUser'
+          url: '/user/update'
         },
         register: {
           method: 'POST',
