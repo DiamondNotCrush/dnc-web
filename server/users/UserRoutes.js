@@ -4,7 +4,6 @@ module.exports = function (app, Users, Connections) {
   
   app.post('/login', userController.userLogin);
   app.post('/addUser', userController.addUser);
-  app.post('/updateUser', userController.updateUser);
-  app.get('/findUser/:id(\\d+)', userController.findUser);
-  app.post('/changePassword', userController.changePassword);
+  app.post('/update', userController.updateUser);
+  app.get('/find/:id(\\d+)', userController.findUser);
 };

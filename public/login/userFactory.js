@@ -9,8 +9,8 @@ angular
         id: 0
       };
 
-    _user.login = function(user, pass, callback) {
-        auth.login({username:user, password:pass})
+    _user.auth = function(user, pass, authtype, callback) {
+        auth[authtype]({username:user, password:pass})
           .$promise
           .then(function(res) {
             _user.details.username = res.username;
