@@ -6,6 +6,7 @@ angular
 
     this.login = function(){
       user.auth(this.email, this.password, 'login', function() {
+
         $state.go('view');
        });
     };
