@@ -14,6 +14,13 @@ module.exports = function (Users) {
      *    email: <string>,
      *    password: <string>
      *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
      */
     userLogin: function(req, res) {
       var field = {};
@@ -28,24 +35,7 @@ module.exports = function (Users) {
         where: field
       })
       .then(function (user) {
-        if (!user) {
-          res.status(401).send({authorized: false});
-        } else if (user.comparePasswords(req.body.password)) { 
-          //save session
-          // req.session.save(function (err) {
-          //   if (err) {
-          //     console.log("Unable to save session");
-          //   }
-          // });
-
-          res.status(200).send({
-            id: user.dataValues.id,
-            username: user.dataValues.username,
-            email: user.dataValues.email
-          });
-        } else {
-          res.status(401).send({authorized: false});
-        }
+        userHelper(user, req.body.password, res, function(){ sendUser(user, res); });
       })
       .catch(function (err) {
         res.status(500).send(err);
@@ -63,6 +53,24 @@ module.exports = function (Users) {
     //   res.send();
     // },
 
+
+    /*
+     * addUser creates a new entry in the database for the user
+     *
+     * Expected object in req.body:
+     *  {
+     *    username: <string>,
+     *    email: <string>,
+     *    password: <string>
+     *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
+     */
     addUser: function (req, res) {
       var username = decodeURIComponent(req.body.username),
           email = decodeURIComponent(req.body.email),
@@ -74,11 +82,7 @@ module.exports = function (Users) {
           password: password
         })
       .then(function (user) {
-        res.send({
-          id: user.dataValues.id,
-          username: user.dataValues.username,
-          email: user.dataValues.email
-        });
+        sendUser(user, res);
       })
       .catch(function(err){
         res.status(500).send(err);
@@ -86,18 +90,61 @@ module.exports = function (Users) {
 
     },
 
+    /*
+     * udpateUser updates the entry in the db for the user if the user exists.
+     *
+     * Expected object in req.body:
+     *  {
+     *    id: <number>,
+     *    password: <string>,
+     *    email: <string>, -- Only if changing
+     *    newPassword: <string> -- Only if changing
+     *  }
+     *
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>,
+     *    status: [<string>]
+     *  }
+     */
     updateUser: function(req, res) {
-      User.update({
-        username: req.body.username,
-        email: decodeURIComponent(req.body.email),
-      }, {
+      User.findOne({
         where: {id: req.body.id}
       })
       .then(function (user) {
-        res.send({
-          id: user.dataValues.id,
-          username: user.dataValues.username,
-          email: user.dataValues.email
+        userHelper(user, req.body.password, res, function() {
+          var status = [];
+          if (req.body.email && req.body.email.length) {
+            user.updateAttributes({email: decodeURIComponent(req.body.email)});
+            status.push('Email address changed.');
+          }
+
+          if (req.body.newPassword && req.body.newPassword.length) {
+            user.updateAttributes({password: req.body.newPassword});
+            status.push('Password changed.');
+          }
+
+          if (status.length > 0) {
+            User.findOne({
+              where: {id: req.body.id}
+            }).then(function(user){
+              res.status(201).send({
+                id: user.dataValues.id,
+                username: user.dataValues.username,
+                email: user.dataValues.email,
+                status: status
+              });
+            });
+          } else {
+            res.status(200).send({
+              id: user.dataValues.id,
+                username: user.dataValues.username,
+                email: user.dataValues.email,
+                status: ['No changes made.']
+            });
+          }
         });
       })
       .catch(function (err) {
@@ -105,37 +152,46 @@ module.exports = function (Users) {
       });
     },
 
+    /*
+     * findUser returns the user from the db.
+     *
+     * Expects id as a parameter: e.g. /3
+     *  
+     *  Returns:
+     *  {
+     *    id: <number>,
+     *    username: <string>,
+     *    email: <string>
+     *  }
+     */
     findUser: function (req, res) {
       User.findOne({
         where: {id: req.params.id}
       })
       .then(function (user) {
-        res.send({
-          id: user.dataValues.id,
-          username: user.dataValues.username,
-          email: user.dataValues.email
-        });
+        sendUser(user, res);
       })
       .catch(function (err) {
         res.status(500).send(err);
       });
     },
-
-    changePassword: function(req, res) {
-      User.findOne({
-        where: {id: req.body.id}
-      })
-      .then(function(user) {
-        if (user.comparePasswords(req.body.oldPassword)) {
-          user.updateAttributes({password: req.body.newPassword});
-          res.status(201).send({success: true});
-        } else {
-          res.status(401).send({success: false, message: 'Password Incorrect'});
-        }
-      })
-      .catch(function(err) {
-        res.status(500).send(err);
-      });
-    }
   }; //End return
 };
+
+function userHelper(user, pass, res, callback) {
+  if (!user) {
+    res.status(401).send({authorized: false});
+  } else if (user.comparePasswords(pass)) { 
+    callback(user);
+  } else {
+    res.status(401).send({authorized: false});
+  }
+}
+
+function sendUser(user, res) {
+  res.status(200).send({
+    id: user.dataValues.id,
+    username: user.dataValues.username,
+    email: user.dataValues.email
+  });
+}
