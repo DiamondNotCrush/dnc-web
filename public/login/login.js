@@ -5,8 +5,8 @@ angular
     this.password = '';
 
     this.login = function(){
+      user.auth(this.email, this.password, 'login', function() {
 
-      user.login(this.email, this.password, function() {
         $state.go('view');
        });
     };
