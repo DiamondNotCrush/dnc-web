@@ -18,7 +18,7 @@ angular
             $state.go('view');
           });
       }
-    },
+    };
     
     //update email
     this.updateEmail = function() {
@@ -28,5 +28,5 @@ angular
           //redirect to library
           $state.go('view');
         });
-    }
+    };
   }]);
