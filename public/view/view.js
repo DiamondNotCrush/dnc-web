@@ -32,8 +32,7 @@ angular
         _this.files = _this.video;
       } else {
         _this.files.forEach(file, function (file){
-          var ext = file.name.toLowerCase.substring(file.name.length - 3);
-          if (ext === 'mp4' || ext === 'ebm' || ext === 'avi' || ext === 'mkv') {
+          if (file.isVideo) {
             _this.video.push(file);
           }
         });
@@ -46,8 +45,7 @@ angular
         _this.files = _this.audio;
       } else {
         _this.files.forEach(file, function (file){
-          var ext = file.name.toLowerCase.substring(file.name.length - 3);
-          if (ext === 'mp3' || ext === 'aac' || ext === 'wma' || ext === 'wav') {
+          if (file.isAudio) {
             _this.audio.push(file);
           }
         });
