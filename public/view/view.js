@@ -8,7 +8,6 @@ angular
     _this.mediaSrc = '';
     _this.video = [];
     _this.audio = [];
-    $scope.play = false;
 
 
     _this.play = function(file) {
@@ -16,7 +15,6 @@ angular
       //Anti-pattern. Change to not alter DOM from controller.
       var video = document.getElementsByTagName('video')[0];
       video.src = file.url;
-      $scope.play = true;
       video.load();
     };
 
