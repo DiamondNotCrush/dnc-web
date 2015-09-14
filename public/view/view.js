@@ -27,15 +27,14 @@ angular
     };
 
     _this.showMovies = function(){
-      console.log(_this.files);
       if (_this.video.length > 0) {
         _this.files = _this.video;
       } else {
         for (var i = 0; i < _this.file.length; i++) {
           if (_this.files[n] && _this.files[n].isVideo)
             _this.video.push(_this.files[n]);
-        }
-        });
+          }
+        };
       }
       _this.files = _this.video;
     };
@@ -47,8 +46,8 @@ angular
         for (var i = 0; i < _this.file.length; i++) {
           if (_this.files[n] && _this.files[n].isAudio)
             _this.audio.push(_this.files[n]);
-        }
-        });
+          }
+        };
       }
       _this.files = _this.audio;
     }
