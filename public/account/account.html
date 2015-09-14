@@ -3,45 +3,60 @@
     <h2 ng-click="updatePassword = !updatePassword">Update Password</h2>
     <hr>
     <div class="form-content" ng-show="updatePassword">
-      <form role="form" class="bottom-75" ng-submit="account.updatePassword()">
+      <form role="form" name="passwordForm" class="bottom-75" ng-submit="account.updatePassword(passwordForm.$valid)" novalidate>
         <div class="table-form">
           <div class="form-groups">
             <div class="form-group">
-              <input type="password" class="form-control input-lg" id="currentPassword" ng-model="account.currentPassword" placeholder="Current Password">
+              <input type="password" class="form-control input-lg" id="currentPassword" name="current" ng-model="account.currentPassword" placeholder="Current Password" ng-required="updatePassword">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control input-lg" id="newPassword" ng-model="account.newPassword" placeholder="New Password">
+              <input type="password" class="form-control input-lg" id="newPassword" name="password" ng-model="account.newPassword" placeholder="New Password" ng-required="updatePassword">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control input-lg" id="confirmPassword" ng-model="account.confirmPassword" placeholder="Confirm New Password">
+              <input type="password" class="form-control input-lg" id="confirmPassword" name="password2" ng-model="account.confirmPassword" placeholder="Confirm New Password" ng-required="updatePassword">
             </div>
             <div class="button-container">
-              <button type="submit" class="btn btn-default">Update Password</button>
+              <button type="submit" class="btn components component-active">Update Password</button>
             </div>
           </div>
         </div>
       </form>
+    </div>
+    <div class="row" ng-if="passwordForm.$submitted && (passwordForm.$invalid || account.passwordMatch === false)">
+      <ul class="text-danger">
+        <li ng-if="passwordForm.current.$error.required">Current password is required</li>
+        <li ng-if="passwordForm.password.$error.required">New password is required</li>
+        <li ng-if="passwordForm.password2.$error.required">New password Confirmation is required</li>
+        <li ng-if="account.passwordMatch === false">Passwords do not match</li>
+      </ul>
     </div>
   </div>
   <div class="updateEmail">    
     <h2 ng-click="updateEmail = !updateEmail">Update Email</h2>
     <hr>
     <div class="form-content" ng-show="updateEmail">
-      <form role="form" name="emailForm" class="bottom-75" ng-submit="account.updateEmail()">
+      <form role="form" name="emailForm" class="bottom-75" ng-submit="account.updateEmail(emailForm.$valid)" novalidate>
         <div class="table-form">
           <div class="form-groups">
             <div class="form-group">
-              <input type="password" class="form-control input-lg" id="currentPassword" ng-model="account.currentPassword" placeholder="Current Password">
+              <input type="password" class="form-control input-lg" id="currentPassword" name="current" ng-model="account.currentPassword" placeholder="Current Password"  ng-required="updateEmail">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control input-lg" name="newEmail" ng-model="account.newEmail" placeholder="New Email" >
+              <input type="email" class="form-control input-lg" name="newEmail" ng-model="account.newEmail" placeholder="New Email" ng-required="updateEmail">
             </div>
             <div class="button-container">
-              <button type="submit" class="btn btn-default">Update Email</button>
+              <button type="submit" class="btn components component-active">Update Email</button>
             </div>
           </div>
         </div>
       </form>
+    </div>
+    <div class="row" ng-if="emailForm.$submitted && emailForm.$invalid">
+      <ul class="text-danger">
+        <li ng-if="emailForm.current.$error.required">Current password is required</li>
+        <li ng-if="emailForm.newEmail.$error.required">New email is required</li>
+        <li ng-if="emailForm.newEmail.$error.email">New email address is invalid</li>
+      </ul>
     </div>
   </div>
 </div>

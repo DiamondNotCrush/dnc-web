@@ -37,3 +37,27 @@ snap-content [ui-view] {
   overflow: hidden;
   outline: none;
 }
+
+.has-error {
+  border-color: #a94442;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.components {
+  background: #18af91;
+  border-color: #18af91;
+  box-shadow: none;
+  color: white;
+}
+
+.component-active {
+  background: orange;
+  border-color: orange;
+}
+
+.btn.focus, .btn:focus, .btn:hover {
+  outline: none;
+  color: white;
+  text-decoration: none;
+}
