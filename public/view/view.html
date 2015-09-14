@@ -21,7 +21,7 @@
           <li><button class="btn btn-default" ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></button></li>
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
           <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> <img ng-if="file.picture" ng-src="{{file.picture}}"></span><span>{{file.name}}</span> <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
-        </ul> 
+        </ul>
      </div>
    </div>
  </div>
