@@ -37,6 +37,7 @@ angular
           }
         };
       _this.files = _this.video;
+      console.log(_this.files);
     };
 
     _this.showMusic = function(){
