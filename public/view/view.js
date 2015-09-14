@@ -31,10 +31,10 @@ angular
       if (_this.video.length > 0) {
         _this.files = _this.video;
       } else {
-        _this.files.forEach(file, function (file){
-          if (file.isVideo) {
-            _this.video.push(file);
-          }
+        for (var i = 0; i < _this.file.length; i++) {
+          if (_this.files[n] && _this.files[n].isVideo)
+            _this.video.push(_this.files[n]);
+        }
         });
       }
       _this.files = _this.video;
@@ -44,10 +44,10 @@ angular
       if (_this.audio.length > 0) {
         _this.files = _this.audio;
       } else {
-        _this.files.forEach(file, function (file){
-          if (file.isAudio) {
-            _this.audio.push(file);
-          }
+        for (var i = 0; i < _this.file.length; i++) {
+          if (_this.files[n] && _this.files[n].isAudio)
+            _this.audio.push(_this.files[n]);
+        }
         });
       }
       _this.files = _this.audio;
