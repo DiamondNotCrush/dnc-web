@@ -12,14 +12,14 @@
    </div>
    <div class="col-xs-12">
     <ul class="library-menu">
-      <li><a ng-click="view.showMovies()">Movies</a></li>
-      <li><a ng-click="view.showMusic()">Music</a></li>
+      <li><a ng-click="type = file.isVideo && !file.isAudio">Movies</a></li>
+      <li><a ng-click="type = file.isAudio && !file.isVideo">Music</a></li>
     </ul>
      <div class="well well-sm library">
         <ul class="no-icon">
           <li><button class="btn btn-default" ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></button></li>
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
-          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"></li><span><img ng-if="file.image" ng-src="{{file.image}}"></span><span>{{file.name}}</span> <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
+          <li ng-if="view.files && view.files.length > 0 && type" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"></li><span><img ng-if="file.image" ng-src="{{file.image}}"></span><span>{{file.name}}</span> <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
         </ul>
      </div>
    </div>
