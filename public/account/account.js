@@ -1,30 +1,37 @@
 angular
   .module('app.account', [])
   .controller('accountController', ['$state', 'user', 'auth', function($state, user, auth){
-    this.currentPassword = '';
-    this.newPassword = '';
-    this.confirmPassword = '';
-    this.newEmail = '';
+    var _this = this;
+    _this.currentPassword = '';
+    _this.newPassword = '';
+    _this.confirmPassword = '';
+    _this.newEmail = '';
     
-    //update password
-    this.updatePassword = function() {
-      if (this.confirmPassword !== this.newPassword) {
-        //trigger error on page
+    _this.updatePassword = function(valid) {
+      if (!valid) { return; }
+      if (_this.confirmPassword !== _this.newPassword) {
+        _this.passwordMatch = false;
       } else {
-        auth.update({id: user.details.id, password: this.currentPassword, newPassword: this.newPassword})
+        auth.update({id: user.details.id, password: _this.currentPassword, newPassword: _this.newPassword})
           .$promise
           .then(function(res) {
+            //Check for errors in return message
+           
+
             //redirect to library
             $state.go('view');
           });
       }
     };
     
-    //update email
-    this.updateEmail = function() {
-      auth.update({id: user.details.id, password: this.currentPassword, email: this.newEmail})
+    _this.updateEmail = function(valid) {
+      if (!valid) { return; }
+      auth.update({id: user.details.id, password: _this.currentPassword, email: _this.newEmail})
         .$promise
         .then(function(res) {
+          //Check for errors in return message
+
+
           //redirect to library
           $state.go('view');
         });
