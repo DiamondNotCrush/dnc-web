@@ -6,6 +6,8 @@ angular
     _this.showAudio = false;
     _this.showVideo = true;
     _this.mediaSrc = '';
+    _this.video = [];
+    _this.audio = [];
 
 
     _this.play = function(file) {
@@ -23,6 +25,34 @@ angular
           _this.files = files;
         });
     };
+
+    _this.showMovies = function(){
+      if (_this.video) {
+        _this.files = _this.video;
+      } else {
+        _this.files.forEach(file, function (file){
+          var ext = file.name.substring(file.name.length - 3);
+          if (ext === 'mp4' || ext === 'webm' || ext === 'avi' || ext === 'mkv') {
+            _this.video.push(file);
+          }
+        });
+      }
+      _this.files = _this.video;
+    };
+
+    _this.showMusic = function(){
+      if (_this.audio) {
+        _this.files = _this.audio;
+      } else {
+        _this.files.forEach(file, function (file){
+          var ext = file.name.substring(file.name.length - 3);
+          if (ext === 'mp3' || ext === 'aac' || ext === 'wma' || ext === 'wav') {
+            _this.audio.push(file);
+          }
+        });
+      }
+      _this.files = _this.audio;
+    }
 
     _this.getLibrary();
   }]);
