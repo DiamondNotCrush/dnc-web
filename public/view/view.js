@@ -27,14 +27,13 @@ angular
     };
 
     _this.showMovies = function(){
+      console.log(_this.files);
       if (_this.video.length > 0) {
         _this.files = _this.video;
       } else {
         _this.files.forEach(file, function (file){
           var ext = file.name.toLowerCase.substring(file.name.length - 3);
-          console.log(ext);
           if (ext === 'mp4' || ext === 'ebm' || ext === 'avi' || ext === 'mkv') {
-            console.log(file);
             _this.video.push(file);
           }
         });
