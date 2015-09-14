@@ -31,11 +31,11 @@ angular
         _this.files = _this.video;
       } else {
         for (var i = 0; i < _this.file.length; i++) {
-          if (_this.files[n] && _this.files[n].isVideo)
-            _this.video.push(_this.files[n]);
+          if (_this.files[n] && _this.files[n].isVideo) {
+            _this.video.push(_this.files[n]);            
+            }
           }
         };
-      }
       _this.files = _this.video;
     };
 
@@ -44,13 +44,13 @@ angular
         _this.files = _this.audio;
       } else {
         for (var i = 0; i < _this.file.length; i++) {
-          if (_this.files[n] && _this.files[n].isAudio)
+          if (_this.files[n] && _this.files[n].isAudio) {
             _this.audio.push(_this.files[n]);
+            }
           }
         };
-      }
       _this.files = _this.audio;
-    }
+    };
 
     _this.getLibrary();
   }]);
