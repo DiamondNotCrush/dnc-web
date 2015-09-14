@@ -86,4 +86,27 @@ snap-content [ui-view] {
   outline: none;
   color: white;
   text-decoration: none;
+
+.library-menu {
+  list-style: none;
+  margin: -1px 0 30px 0;
+}
+
+.libray-menu li {
+  display: inline;
+}
+
+.library-menu li a {
+  float:left;
+  display: block;
+  padding: 5px 10px;
+  margin-left: -1px;
+  position: relative;
+  left: 1px;
+  background: rgba(0,0,0,0.5);
+  text-decoration: none;
+}
+
+.library-menu li a:hover, .libray-menu li a:active  {
+  background: rgba(0,0,0,0.9);
 }
