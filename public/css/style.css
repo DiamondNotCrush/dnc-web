@@ -4,6 +4,15 @@
   background-color: rgba(0,0,0,0.5); 
 }
 
+.library li {
+  display: inline-block;
+}
+
+.library li img {
+  width: 75px;
+  height: 100px
+}
+
 .library button {
   background-color: rgba(0,0,0,0.6);
   display: block;
