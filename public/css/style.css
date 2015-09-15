@@ -23,6 +23,10 @@
 }
 
 .music-list {
+  display: block;
+}
+
+.music-list img {
   display: none;
 }
 
