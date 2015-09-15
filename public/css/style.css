@@ -30,6 +30,10 @@
   color: white;
 }
 
+.music-list {
+  display: block;
+}
+
 .pointer {
   cursor: pointer;
 }
