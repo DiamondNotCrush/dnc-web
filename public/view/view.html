@@ -23,7 +23,7 @@
           
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
           <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files | filter:view.filter" ng-click="view.play(file)">
-            <img ng-if="file.picture && view.filter" ng-src="{{file.picture}}" onerror="this.src='../img/default_media.jpg'"></span>
+            <img ng-if="file.picture" ng-src="{{file.picture}}" onerror="this.src='../img/default_media.jpg'" ng-class="{view.filter = isAudio: music-list}"></span>
             <span class="file-name">{{file.name}}</span>
           </li>
         </ul> 
