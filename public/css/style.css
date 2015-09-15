@@ -55,8 +55,7 @@ snap-content [ui-view] {
 }
 
 .file-name {
-  float: right;
-  margin: 2px auto;
+  display: block;
 }
 
 .library-menu {
