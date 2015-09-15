@@ -23,7 +23,7 @@
           <li ng-if="view.files && view.files.length > 0" class="pointer" ng-class="{'music-list': file.isAudio}" ng-repeat="file in view.files | filter:view.filter | orderBy: '+isVideo':true" ng-click="view.play(file)">
             <img ng-if="file.isVideo" ng-src="{{file.picture || 'img/default_media.jpg'}}" onerror="this.src='img/default_media.jpg'">
             <span class="file-name">{{file.name}}</span>
-          </li>
+          </li> 
         </ul> 
      </div>
    </div>
