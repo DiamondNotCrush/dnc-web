@@ -8,7 +8,8 @@ angular
     _this.mediaSrc = '';
 
     _this.setFilter = function(filter) {
-      _this.filter = '';
+      //Default to show videos
+      _this.filter = {isVideo: true};
 
       if (filter === 'audio') {
         _this.filter = {isAudio: true};
