@@ -16,8 +16,6 @@
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
     1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
 
 ## Project Overview
   Dnc Media is an open-source cloud solution for storing and accessing your music and movies. The project has 3 parts: 
@@ -45,8 +43,4 @@ The only requirements to run this client are a server that can support Node.js a
 
 ### Installing Dependencies
 
-To install dependencies, for this client, run ```npm install```
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+To install dependencies, for this client, run ```npm install```. The web server was written using node v0.12.2 and MySQL version 5.5.
