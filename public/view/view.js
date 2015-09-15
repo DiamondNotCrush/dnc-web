@@ -35,7 +35,7 @@ angular
             _this.video.push(_this.files[n]);            
             }
           }
-        };
+        }
       _this.files = _this.video;
       console.log(_this.files);
     };
@@ -49,7 +49,7 @@ angular
             _this.audio.push(_this.files[n]);
             }
           }
-        };
+        }
       _this.files = _this.audio;
     };
 

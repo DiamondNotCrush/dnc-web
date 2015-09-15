@@ -40,7 +40,8 @@
             <li ng-if="loginForm.username.$error.required">Username is required</li>
             <li ng-if="loginForm.email.$error.required">Email address is required</li>
             <li ng-if="loginForm.email.$error.email">Email address is invalid</li>
-            <li ng-if="loginForm.password.$error.required">Password is required</li>
+            <li ng-if="login.invalidLogin">Username/Password combination is invalid</li>
+            <li ng-if="!login.invalidLogin && loginForm.password.$error.required">Password is required</li>
             <li ng-if="loginForm.password2.$error.required">Password Confirmation is required</li>
             <li ng-if="login.register === true && login.passwordMatch === false">Passwords do not match</li>
           </ul>
