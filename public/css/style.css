@@ -22,14 +22,6 @@
   color: white;
 }
 
-.music-list {
-  display: block;
-}
-
-.music-list img {
-  display: none;
-}
-
 .pointer {
   cursor: pointer;
 }
@@ -113,4 +105,12 @@ snap-content [ui-view] {
   outline: none;
   color: white;
   text-decoration: none;
+}
+
+.music-list {
+  display: block;
+}
+
+.music-list img {
+  display: none;
 }
