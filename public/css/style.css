@@ -4,6 +4,16 @@
   background-color: rgba(0,0,0,0.5); 
 }
 
+.library li {
+  display: inline-block;
+}
+
+.library li img {
+  width: 75px;
+  height: 100px;
+  border-radius: 5px;
+}
+
 .library button {
   background-color: rgba(0,0,0,0.6);
   display: block;
@@ -21,6 +31,10 @@
 
 video {
   background-color: rgb(0,0,0);
+}
+
+.video-wrapper {
+  margin-bottom: 20px;
 }
 
 snap-content [ui-view] {
@@ -86,6 +100,7 @@ snap-content [ui-view] {
   outline: none;
   color: white;
   text-decoration: none;
+}
 
 .library-menu {
   list-style: none;
