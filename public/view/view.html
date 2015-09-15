@@ -13,7 +13,7 @@
    <div class="col-xs-12">
     <ul class="library-menu">
       <!--Update below to filter files based on isAudio/isVideo property of file -->
-      <li><a ng-click="view.setFilter()">All</a></li>
+      <!--<li><a ng-click="view.setFilter()">All</a></li>-->
       <li><a ng-click="view.setFilter('video')">Movies</a></li>
       <li><a ng-click="view.setFilter('audio')">Music</a></li>
       <li><a ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></a></li>
@@ -22,7 +22,7 @@
         <ul class="no-icon">
           
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
-          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-class="{'music-list': file.isAudio}" ng-repeat="file in view.files | filter:view.filter | orderBy: file.isVideo > file.isAudio" ng-click="view.play(file)">
+          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-class="{'music-list': file.isAudio}" ng-repeat="file in view.files | filter:view.filter" ng-click="view.play(file)">
             <img ng-if="file.picture" ng-src="{{file.picture}}" onerror="this.src='../img/default_media.jpg'"></span>
             <span class="file-name">{{file.name}}</span>
           </li>
