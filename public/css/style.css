@@ -1,5 +1,5 @@
 .music-list {
-  display: block;
+  display: block !important;
 }
 
 .music-list img {
