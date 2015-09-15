@@ -43,7 +43,7 @@ The only requirements to run this client are a server that can support Node.js a
 
 ### Installing Dependencies
 
-To install dependencies, for this client, run ```npm install```. The web server was written using node v0.12.2 and MySQL version 5.5.
+To install dependencies, for this client, run `npm install`. The web server was written using node v0.12.2 and MySQL version 5.5.
 
 ### Start Grunt  
 
