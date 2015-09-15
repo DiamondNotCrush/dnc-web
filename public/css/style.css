@@ -1,3 +1,11 @@
+.music-list {
+  display: block !important;
+}
+
+.music-list img {
+  display: none;
+}
+
 .library {
   height: 100%;
   overflow-x: hidden;

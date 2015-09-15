@@ -31,6 +31,7 @@ angular
       view.Files.query({id:_this.user.id})
         .$promise
         .then(function(files) {
+          console.log(files);
           _this.files = files;
         });
     };
