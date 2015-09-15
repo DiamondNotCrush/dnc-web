@@ -1,4 +1,4 @@
-<div class="account-page">
+<div class="account-page" ng-init="updateEmail = false; updatePassword = false">
   <div class="updatePassword">
     <h2 ng-click="updatePassword = !updatePassword">Update Password</h2>
     <hr>
@@ -35,7 +35,7 @@
     <h2 ng-click="updateEmail = !updateEmail">Update Email</h2>
     <hr>
     <div class="form-content" ng-show="updateEmail">
-      <form role="form" name="emailForm" class="bottom-75" ng-submit="account.updateEmail(emailForm.$valid)" novalidate>
+      <form role="form" name="emailForm" class="bottom-75" ng-submit="account.update(emailForm.$valid)" novalidate>
         <div class="table-form">
           <div class="form-groups">
             <div class="form-group">
