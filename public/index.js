@@ -1,6 +1,8 @@
 var app = window.app = angular
   .module('app', [
+  'ngAnimate',
   'ngResource',
+  'ngCookies',
   'ui.router',
   'snap',
   'media',
@@ -11,20 +13,21 @@ var app = window.app = angular
   'app.account',
   'factory.user',
   'service.view',
-  'service.auth'
+  'service.auth',
+  'service.session'
   ])  
-  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
       .state('main', {
-        url: '/',
         controller: 'mainController',
         controllerAs: 'main',
         templateUrl: 'main/main.html',
         requiresLogin: true
       })
       .state('view', {
+        url: '/',
         controller: 'viewController',
         controllerAs: 'view',
         templateUrl: 'view/view.html',
@@ -52,8 +55,10 @@ var app = window.app = angular
       });
 
       $locationProvider.html5Mode(true);
+      $compileProvider.debugInfoEnabled(false);
   }])
   .run(['$rootScope', '$state', 'user', function($rootScope, $state, user){
+    user.get();
     $rootScope.$on('$stateChangeStart', 
       function(event, toState, toParams, fromState, fromParams){
         if (toState.requiresLogin && !user.details.isAuthorized) {

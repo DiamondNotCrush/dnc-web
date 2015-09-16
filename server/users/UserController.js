@@ -42,18 +42,6 @@ module.exports = function (Users) {
       });
     },
 
-    // userLogout: function (req, res) {
-    //   //destroy session
-    //   req.session.destroy(function (err) {
-    //     if (err) {
-    //       console.log("Unable to destroy session: ", err);
-    //     }
-    //   });
-    //   res.redirect(301, "/");
-    //   res.send();
-    // },
-
-
     /*
      * addUser creates a new entry in the database for the user
      *
@@ -116,33 +104,37 @@ module.exports = function (Users) {
       .then(function (user) {
         userHelper(user, req.body.password, res, function() {
           var status = [];
+          var updates = {};
           if (req.body.email && req.body.email.length) {
-            user.updateAttributes({email: decodeURIComponent(req.body.email)});
+            updates.email = decodeURIComponent(req.body.email);
             status.push('Email address changed.');
           }
 
           if (req.body.newPassword && req.body.newPassword.length) {
-            user.updateAttributes({password: req.body.newPassword});
+            updates.password = req.body.newPassword;
             status.push('Password changed.');
           }
 
           if (status.length > 0) {
-            User.findOne({
-              where: {id: req.body.id}
-            }).then(function(user){
-              res.status(201).send({
-                id: user.dataValues.id,
-                username: user.dataValues.username,
-                email: user.dataValues.email,
-                status: status
+            user
+              .updateAttributes(updates)
+              .then(function(user){
+                res.status(201).send({
+                  id: user.dataValues.id,
+                  username: user.dataValues.username,
+                  email: user.dataValues.email,
+                  status: status
+                });
+              })
+              .catch(function(err){
+                res.status(500).send(err);
               });
-            });
           } else {
             res.status(200).send({
               id: user.dataValues.id,
-                username: user.dataValues.username,
-                email: user.dataValues.email,
-                status: ['No changes made.']
+                  username: user.dataValues.username,
+                  email: user.dataValues.email,
+                  status: ['No changes made.']
             });
           }
         });
@@ -176,7 +168,7 @@ module.exports = function (Users) {
       });
     },
   }; //End return
-};
+}; //End exports
 
 function userHelper(user, pass, res, callback) {
   if (!user) {

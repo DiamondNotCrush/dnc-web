@@ -7,6 +7,17 @@ angular
     _this.showVideo = true;
     _this.mediaSrc = '';
 
+    _this.setFilter = function(filter) {
+      _this.filter = '';
+
+      if (filter === 'audio') {
+        _this.filter = {isAudio: true};
+      }
+
+      if (filter === 'video') {
+        _this.filter = {isVideo: true};
+      }
+    };
 
     _this.play = function(file) {
       // _this.mediaSrc = file.url;
@@ -20,6 +31,7 @@ angular
       view.Files.query({id:_this.user.id})
         .$promise
         .then(function(files) {
+          console.log(files);
           _this.files = files;
         });
     };

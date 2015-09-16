@@ -1,4 +1,4 @@
-<div class="dashboard-page">
+<div class="dashboard-page" ng-init="menuOpen = false">
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 main">
@@ -10,7 +10,7 @@
             <ul class="snap-ul">
               <li ng-class="{active: main.state.includes('view')}"><a ui-sref="view">HOME</a></li>
               <li ng-class="{active: main.state.includes('account')}"><a ui-sref="account">ACCOUNT</a></li>
-              <li><a ui-sref="login">LOGOUT</a></li>
+              <li><a href="" ng-click="main.logout()">LOGOUT</a></li>
             </ul>
           </div>
         </snap-drawer>
@@ -25,7 +25,7 @@
           <div class="fr">
             <h2>DnC <small>{{main.state.$current.title}}</small></h2>
           </div>
-          <div class="jumbotron">
+          <div>
             <div class="container">
               <div ui-view></div>
             </div>

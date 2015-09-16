@@ -1,23 +1,30 @@
 <script src="//cdn.dashjs.org/latest/dash.all.js"></script>
 <div class="row">
-  <div class="col-xs-12 col-md-8">
+  <div class="col-xs-12 video-wrapper">
       <div class="embed-responsive embed-responsive-16by9 img-rounded">
        <video
           class="dashjs-player embed-responsive-item img-responsive" 
           data-html5-video="{{view.mediaSrc}}"
           data-preload="auto"
           data-autoplay="true"
-          data-controls="true"
-          ng-show="!view.files">
+          data-controls="true">
      </div>
    </div>
    <div class="col-xs-12">
+    <ul class="library-menu">
+      <li><a ng-click="view.setFilter()">All</a></li>
+      <li><a ng-click="view.setFilter('video')">Movies <i class="fa fa-video-camera"></i></a></li>
+      <li><a ng-click="view.setFilter('audio')">Music <i class="fa fa-music"></i></a></li>
+      <li><a ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></a></li>
+    </ul>
      <div class="well well-sm library">
         <ul class="no-icon">
-          <li><button class="btn btn-default center-block" ng-click="view.getLibrary()">Refresh <i class="fa fa-refresh"></i></button></li>
           <li ng-if="!view.files || view.files.length === 0">No files in library</li>
-          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-repeat="file in view.files" ng-click="view.play(file)"><i class="fa fa-fw fa-play"></i> <img src="{{file.image}}"></span><span>{{file.name}}</span> <i ng-if="file.isAudio" class="fa fa-fw fa-music"></i><i ng-if="file.isVideo" class="fa fa-fw fa-video-camera"></i></li>
-        </ul>
+          <li ng-if="view.files && view.files.length > 0" class="pointer" ng-class="{'music-list': file.isAudio}" ng-repeat="file in view.files | filter:view.filter | orderBy: '+isVideo':true" ng-click="view.play(file)">
+            <img ng-if="file.isVideo" ng-src="{{file.picture || 'img/default_media.jpg'}}" onerror="this.src='img/default_media.jpg'">
+            <span class="file-name">{{file.name}}</span>
+          </li>
+        </ul> 
      </div>
    </div>
  </div>
