@@ -47,5 +47,5 @@ To install dependencies, for this client, run `npm install`. The web server was 
 
 ### Start Grunt  
 
-Make sure you already have [grunt-cli][https://github.com/gruntjs/grunt-cli]  and the project dependencies installed.
+Make sure you already have [grunt-cli](https://github.com/gruntjs/grunt-cli)  and the project dependencies installed.
 Type `grunt` to minify, concat, and uglify css and js. If you are performing active development, type `grunt watch` to have grunt automatically perform these tasks whenever you save a change.
