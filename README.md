@@ -10,12 +10,12 @@
 
 ## Table of Contents
 
-1. [Project Overview] (#overview)
+1. [Project Overview](#overview)
 1. [Usage](#Usage)
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
+    1. [Start Grunt](#start-grunt)
 
 ## Project Overview
   Dnc Media is an open-source cloud solution for storing and accessing your music and movies. The project has 3 parts: 
@@ -25,7 +25,7 @@
   2. [Web Server](https://github.com/DiamondNotCrush/dnc-web)
   3. [Mobile App](https://github.com/DiamondNotCrush/dnc-mobile)
   
-  The client server is installed on the user's computer that has access to all of their media. The user can easily signup, login and quickly do all the necessary setup needed to begin streaming their movies and music from the web or mobile app.
+  The client server is installed on the user's computer that has access to all of their media. The user can easily sign up, log in and quickly do all the necessary setup needed to begin streaming their movies and music from the web or mobile app.
   
   The web server is used to store the user information and act as the "single-source-of-truth" for all authentication requests. A user can also use the web server to access their media when away from their main computer.
   
@@ -43,4 +43,9 @@ The only requirements to run this client are a server that can support Node.js a
 
 ### Installing Dependencies
 
-To install dependencies, for this client, run ```npm install```. The web server was written using node v0.12.2 and MySQL version 5.5.
+To install dependencies, for this client, run `npm install`. The web server was written using node v0.12.2 and MySQL version 5.5.
+
+### Start Grunt  
+
+Make sure you already have [grunt-cli][https://github.com/gruntjs/grunt-cli]  and the project dependencies installed.
+Type `grunt` to minify, concat, and uglify css and js. If you are performing active development, type `grunt watch` to have grunt automatically perform these tasks whenever you save a change.

@@ -16,7 +16,7 @@ var app = window.app = angular
   'service.auth',
   'service.session'
   ])  
-  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -55,6 +55,7 @@ var app = window.app = angular
       });
 
       $locationProvider.html5Mode(true);
+      $compileProvider.debugInfoEnabled(false);
   }])
   .run(['$rootScope', '$state', 'user', function($rootScope, $state, user){
     user.get();
