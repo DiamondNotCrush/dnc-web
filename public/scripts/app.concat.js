@@ -111,12 +111,14 @@ angular
       view.Files.query({id:_this.user.id})
         .$promise
         .then(function(files) {
+          console.log(files);
           _this.files = files;
         });
     };
 
     _this.getLibrary();
   }]);
+
 angular
   .module('service.view', [])
   .service('view', ['$resource', 'user', function($resource, user){
