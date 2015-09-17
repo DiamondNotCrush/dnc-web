@@ -114,11 +114,3 @@ snap-content [ui-view] {
   color: white;
   text-decoration: none;
 }
-
-.music-list {
-  display: block;
-}
-
-.music-list img {
-  display: none;
-}
