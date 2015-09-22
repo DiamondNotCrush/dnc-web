@@ -1,12 +1,9 @@
-# Project Name
-
-> DnC Media
-
+# DnC Media - Web Edition
 ## Team
 
   - __Product Owner__: Chris Griffis
   - __Scrum Master__: Owen Dismuke
-  - __Development Team Members__: Ken Kim, Nate Parrish
+  - __Development Team__: Chris Griffis, Ken Kim, Nate Parrish, Owen Dismuke
 
 ## Table of Contents
 
